@@ -1,14 +1,31 @@
+import { readMemberAccess, readMemberSession, readSingleAccess } from "./_lib/access.js";
+
+const singlePaidTiers = new Set(["starter", "core", "deep", "love", "career"]);
+const membershipTiers = new Set(["monthly", "quarterly", "yearly"]);
+
 export async function onRequestPost(context) {
   const body = await context.request.json();
   const focus = body.focus || "general";
   const tier = body.tier || "free";
   const question = String(body.question || "").trim();
+  const sessionSecret = context.env.SESSION_SECRET;
   const profile = {
     name: String(body.name || "").trim(),
     birthDate: String(body.birthDate || "").trim(),
     birthTime: String(body.birthTime || "").trim(),
     context: String(body.context || "").trim()
   };
+
+  const accessError = await verifyTierAccess(context.request, sessionSecret, tier);
+  if (accessError) {
+    return new Response(JSON.stringify(accessError), {
+      status: accessError.status,
+      headers: {
+        "content-type": "application/json; charset=UTF-8",
+        "cache-control": "no-store"
+      }
+    });
+  }
 
   const aiDraft = await fetchAiDraft(context, { focus, tier, question, profile });
   const response = buildReading({ focus, tier, question, profile, aiDraft });
@@ -19,6 +36,49 @@ export async function onRequestPost(context) {
       "cache-control": "no-store"
     }
   });
+}
+
+async function verifyTierAccess(request, sessionSecret, tier) {
+  if (tier === "free") return null;
+  if (!sessionSecret) {
+    return {
+      ok: false,
+      status: 500,
+      message: "Access control is not configured yet."
+    };
+  }
+
+  if (singlePaidTiers.has(tier)) {
+    const singleAccess = await readSingleAccess(request, sessionSecret);
+    if (!singleAccess || singleAccess.tier !== tier || Number(singleAccess.expiresAt || 0) < Date.now()) {
+      return {
+        ok: false,
+        status: 402,
+        message: "This one-time reading is locked until payment is completed."
+      };
+    }
+  }
+
+  if (membershipTiers.has(tier)) {
+    const session = await readMemberSession(request, sessionSecret);
+    const memberAccess = await readMemberAccess(request, sessionSecret);
+    if (!session) {
+      return {
+        ok: false,
+        status: 401,
+        message: "Please log in to use membership readings."
+      };
+    }
+    if (!memberAccess || memberAccess.tier !== tier || Number(memberAccess.expiresAt || 0) < Date.now()) {
+      return {
+        ok: false,
+        status: 402,
+        message: "Your membership payment has not been activated for this reading tier yet."
+      };
+    }
+  }
+
+  return null;
 }
 
 function buildReading({ focus, tier, question, profile, aiDraft }) {

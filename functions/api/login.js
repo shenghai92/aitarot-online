@@ -1,7 +1,13 @@
+import { createSignedToken } from "./_lib/access.js";
+
 export async function onRequestPost(context) {
   const db = context.env.DB;
+  const sessionSecret = context.env.SESSION_SECRET;
   if (!db) {
     return json({ ok: false, message: "D1 database is not bound yet." }, 500);
+  }
+  if (!sessionSecret) {
+    return json({ ok: false, message: "Session secret is not configured yet." }, 500);
   }
 
   const body = await context.request.json();
@@ -22,11 +28,28 @@ export async function onRequestPost(context) {
     return json({ ok: false, message: "Login failed. Check your email or password." }, 401);
   }
 
-  return json({
-    ok: true,
-    message: "Login succeeded. Membership-only reading history can be enabled next.",
-    user: { id: row.id, email: row.email }
-  });
+  const token = await createSignedToken(
+    {
+      userId: row.id,
+      email: row.email,
+      expiresAt: Date.now() + 30 * 24 * 60 * 60 * 1000
+    },
+    sessionSecret
+  );
+
+  return new Response(
+    JSON.stringify({
+      ok: true,
+      message: "Login succeeded. You can now start a membership checkout.",
+      user: { id: row.id, email: row.email }
+    }),
+    {
+      headers: {
+        "content-type": "application/json; charset=UTF-8",
+        "set-cookie": `member_session=${encodeURIComponent(token)}; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=${30 * 24 * 60 * 60}`
+      }
+    }
+  );
 }
 
 async function hashPassword(password) {
