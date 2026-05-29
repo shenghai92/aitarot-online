@@ -8,6 +8,7 @@
 - Creem 支付入口占位（需替换为你的真实链接）
 - 隐私政策页面
 - SEO 基础：`robots.txt`、`sitemap.xml`
+- 自动站点地图：新增页面后可一键重新生成 `sitemap.xml`
 
 ## 你需要提供（我才能继续代操作）
 - Cloudflare API Token（有 Pages 与 DNS 编辑权限）
@@ -31,3 +32,12 @@
 npm run dev
 # 打开 http://localhost:8787
 ```
+
+## 新增页面后的抓取更新
+如果以后新增根目录下的 `.html` 页面，执行：
+
+```bash
+npm run sitemap
+```
+
+这会自动扫描当前项目根目录里的所有 `.html` 页面并更新 `sitemap.xml`。
