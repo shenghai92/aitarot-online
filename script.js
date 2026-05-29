@@ -1,6 +1,3 @@
-document.getElementById("year") &&
-  (document.getElementById("year").textContent = new Date().getFullYear());
-
 const productLinks = {
   starter: "https://www.creem.io/payment/prod_30q7e53WSC3RYYkA5SiUj3",
   core: "https://www.creem.io/payment/prod_4DGdRimLy3vYK1XB1GmWjN",
