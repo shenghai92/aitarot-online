@@ -202,6 +202,81 @@ function drawFreeReading() {
   `;
 }
 
+function closeCustomSelects(exceptId = "") {
+  document.querySelectorAll(".custom-select").forEach((root) => {
+    if (root.dataset.selectId !== exceptId) {
+      root.classList.remove("open");
+      const button = root.querySelector(".custom-select-button");
+      if (button) button.setAttribute("aria-expanded", "false");
+    }
+  });
+}
+
+function syncCustomSelect(select) {
+  const root = select.parentElement?.querySelector(".custom-select");
+  if (!root) return;
+  const buttonLabel = root.querySelector(".custom-select-label");
+  const options = root.querySelectorAll(".custom-select-option");
+  const current = select.options[select.selectedIndex];
+  if (buttonLabel && current) {
+    buttonLabel.textContent = current.textContent;
+  }
+  options.forEach((option) => {
+    option.classList.toggle("selected", option.dataset.value === select.value);
+  });
+}
+
+function createCustomSelect(select) {
+  if (!select || select.dataset.customized === "true") return;
+
+  select.dataset.customized = "true";
+  select.classList.add("native-select");
+
+  const wrapper = document.createElement("div");
+  wrapper.className = "custom-select";
+  wrapper.dataset.selectId = select.id;
+
+  const button = document.createElement("button");
+  button.type = "button";
+  button.className = "custom-select-button";
+  button.setAttribute("aria-haspopup", "listbox");
+  button.setAttribute("aria-expanded", "false");
+  button.innerHTML = `<span class="custom-select-label"></span><span class="custom-select-caret">▾</span>`;
+
+  const list = document.createElement("div");
+  list.className = "custom-select-list";
+  list.setAttribute("role", "listbox");
+
+  [...select.options].forEach((nativeOption) => {
+    const option = document.createElement("button");
+    option.type = "button";
+    option.className = "custom-select-option";
+    option.dataset.value = nativeOption.value;
+    option.textContent = nativeOption.textContent;
+    option.addEventListener("click", () => {
+      select.value = nativeOption.value;
+      select.dispatchEvent(new Event("change", { bubbles: true }));
+      syncCustomSelect(select);
+      closeCustomSelects();
+    });
+    list.appendChild(option);
+  });
+
+  button.addEventListener("click", () => {
+    const willOpen = !wrapper.classList.contains("open");
+    closeCustomSelects(willOpen ? select.id : "");
+    wrapper.classList.toggle("open", willOpen);
+    button.setAttribute("aria-expanded", willOpen ? "true" : "false");
+  });
+
+  select.insertAdjacentElement("afterend", wrapper);
+  wrapper.appendChild(button);
+  wrapper.appendChild(list);
+
+  select.addEventListener("change", () => syncCustomSelect(select));
+  syncCustomSelect(select);
+}
+
 function renderReadingResult(result) {
   const paragraphs = result.paragraphs
     .map((text) => `<div class="reading-section"><strong>Reading</strong><p>${text}</p></div>`)
@@ -354,9 +429,22 @@ function handlePurchaseState() {
   }
 }
 
+function setupCustomSelects() {
+  ["free-topic", "reading-focus", "reading-tier"].forEach((id) => {
+    createCustomSelect(document.getElementById(id));
+  });
+
+  document.addEventListener("click", (event) => {
+    if (!event.target.closest(".custom-select")) {
+      closeCustomSelects();
+    }
+  });
+}
+
 renderPlanCards("single-plans", singlePlans);
 renderPlanCards("focus-plans", focusPlans);
 renderPlanCards("member-plans", memberPlans);
+setupCustomSelects();
 
 document.getElementById("free-draw").addEventListener("click", drawFreeReading);
 document.getElementById("free-topic").addEventListener("change", drawFreeReading);
