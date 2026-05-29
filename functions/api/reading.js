@@ -3,8 +3,16 @@ export async function onRequestPost(context) {
   const focus = body.focus || "general";
   const tier = body.tier || "free";
   const question = String(body.question || "").trim();
-  const aiDraft = await fetchAiDraft(context, { focus, tier, question });
-  const response = buildReading({ focus, tier, question, aiDraft });
+  const profile = {
+    name: String(body.name || "").trim(),
+    birthDate: String(body.birthDate || "").trim(),
+    birthTime: String(body.birthTime || "").trim(),
+    context: String(body.context || "").trim()
+  };
+
+  const aiDraft = await fetchAiDraft(context, { focus, tier, question, profile });
+  const response = buildReading({ focus, tier, question, profile, aiDraft });
+
   return new Response(JSON.stringify(response), {
     headers: {
       "content-type": "application/json; charset=UTF-8",
@@ -13,7 +21,7 @@ export async function onRequestPost(context) {
   });
 }
 
-function buildReading({ focus, tier, question, aiDraft }) {
+function buildReading({ focus, tier, question, profile, aiDraft }) {
   const cleanQuestion = question || fallbackQuestion(focus);
   const focusMap = {
     love: {
@@ -29,7 +37,8 @@ function buildReading({ focus, tier, question, aiDraft }) {
       actions: [
         "say the simplest true thing first",
         "watch for reciprocity instead of chasing intensity",
-        "protect your dignity while staying warm"
+        "protect your dignity while staying warm",
+        "focus on whether closeness is mutual, not only desired"
       ]
     },
     career: {
@@ -45,7 +54,8 @@ function buildReading({ focus, tier, question, aiDraft }) {
       actions: [
         "focus on one practical priority this week",
         "measure the opportunity cost of waiting",
-        "make your next move visible and specific"
+        "make your next move visible and specific",
+        "separate fear of change from actual downside"
       ]
     },
     general: {
@@ -61,7 +71,8 @@ function buildReading({ focus, tier, question, aiDraft }) {
       actions: [
         "reduce noise before forcing a decision",
         "name what is true right now",
-        "choose one stabilizing action"
+        "choose one stabilizing action",
+        "avoid dramatic conclusions before the pattern is clear"
       ]
     }
   };
@@ -140,7 +151,7 @@ function buildReading({ focus, tier, question, aiDraft }) {
         : focusMap.general;
 
   const chosenTier = tierMap[tier] || tierMap.free;
-  const paragraphs = buildParagraphs(cleanQuestion, chosenFocus, chosenTier, aiDraft);
+  const paragraphs = buildParagraphs(cleanQuestion, chosenFocus, chosenTier, profile, aiDraft);
   const actionList = chosenFocus.actions.slice(0, chosenTier.listCount);
   const followupText =
     chosenTier.followups > 0
@@ -152,6 +163,7 @@ function buildReading({ focus, tier, question, aiDraft }) {
     focus: chosenFocus.label,
     symbol: chosenFocus.symbol,
     depth: chosenTier.depth,
+    profileUsed: summarizeProfile(profile),
     summary: chosenFocus.summary,
     paragraphs,
     actions: actionList,
@@ -159,13 +171,14 @@ function buildReading({ focus, tier, question, aiDraft }) {
   };
 }
 
-function buildParagraphs(question, focus, tier, aiDraft) {
+function buildParagraphs(question, focus, tier, profile, aiDraft) {
+  const profileLine = summarizeProfile(profile);
   const first =
     `Question focus: "${question}". ${focus.symbol} suggests that the most important movement here is not noise, but pattern recognition.`;
   const second =
     `In ${focus.label.toLowerCase()} terms, the reading emphasizes ${focus.themes[0]}, then ${focus.themes[1]}. That means the next move should be simple, deliberate, and easier to sustain than to regret.`;
   const third =
-    `The stronger paid layers add more than length: they add structure, timing, and decision pressure mapping. At the ${tier.title} level, the answer should guide action, not only mood.`;
+    `The stronger paid layers add more than length: they add structure, timing, and decision pressure mapping. At the ${tier.title} level, the answer should guide action, not only mood.${profileLine ? ` Input used: ${profileLine}.` : ""}`;
   const fourth =
     `The reading also points to ${focus.themes[2]}. This is where hesitation can either protect you or trap you, depending on whether you are waiting for clarity or avoiding contact with reality.`;
   const fifth =
@@ -186,7 +199,16 @@ function fallbackQuestion(focus) {
   return "What do I most need to understand about my current situation?";
 }
 
-async function fetchAiDraft(context, { focus, tier, question }) {
+function summarizeProfile(profile) {
+  const parts = [];
+  if (profile.name) parts.push(`name: ${profile.name}`);
+  if (profile.birthDate) parts.push(`birth date: ${profile.birthDate}`);
+  if (profile.birthTime) parts.push(`birth time: ${profile.birthTime}`);
+  if (profile.context) parts.push(`context: ${profile.context}`);
+  return parts.join("; ");
+}
+
+async function fetchAiDraft(context, { focus, tier, question, profile }) {
   const apiKey = context.env.API_KEY;
   const apiBase = context.env.API_BASE_URL;
   const apiModel = context.env.API_MODEL;
@@ -224,7 +246,7 @@ async function fetchAiDraft(context, { focus, tier, question }) {
           { role: "system", content: systemPrompt },
           {
             role: "user",
-            content: `${tierPrompt}\nQuestion: ${question}\nFocus: ${focus}\nTier: ${tier}`
+            content: `${tierPrompt}\nQuestion: ${question}\nFocus: ${focus}\nTier: ${tier}\nOptional profile: ${summarizeProfile(profile) || "none"}`
           }
         ]
       })
@@ -235,11 +257,7 @@ async function fetchAiDraft(context, { focus, tier, question }) {
     }
 
     const data = await response.json();
-    return (
-      data.choices?.[0]?.message?.content?.trim() ||
-      data.result?.response?.trim() ||
-      ""
-    );
+    return data.choices?.[0]?.message?.content?.trim() || data.result?.response?.trim() || "";
   } catch {
     return "";
   }
