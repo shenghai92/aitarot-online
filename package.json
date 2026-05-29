@@ -1,0 +1,9 @@
+﻿{
+  "name": "aitarot-online",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "npx serve . -l 8787",
+    "deploy:guide": "echo Deploy via Cloudflare Pages: build command empty, output directory /"
+  }
+}
