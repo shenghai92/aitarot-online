@@ -270,7 +270,7 @@ function summarizeProfile(profile) {
 
 async function fetchAiDraft(context, { focus, tier, question, profile }) {
   const apiKey = context.env.API_KEY;
-  const apiBase = context.env.API_BASE_URL;
+  const apiBase = normalizeApiBase(context.env.API_BASE_URL);
   const apiModel = context.env.API_MODEL;
 
   if (!apiKey || !apiBase || !apiModel || !question) {
@@ -321,4 +321,27 @@ async function fetchAiDraft(context, { focus, tier, question, profile }) {
   } catch {
     return "";
   }
+}
+
+function normalizeApiBase(apiBase) {
+  const raw = String(apiBase || "").trim().replace(/\/+$/, "");
+  if (!raw) return "";
+
+  if (raw.endsWith("/chat/completions") || raw.endsWith("/responses")) {
+    return raw;
+  }
+
+  if (raw.endsWith("/chatgpt/v1")) {
+    return `${raw}/chat/completions`;
+  }
+
+  if (raw === "https://api.aicodewith.com") {
+    return "https://api.aicodewith.com/chatgpt/v1/chat/completions";
+  }
+
+  if (raw === "https://api.jiuwanliguoxue.com") {
+    return "https://api.jiuwanliguoxue.com/chatgpt/v1/chat/completions";
+  }
+
+  return raw;
 }
