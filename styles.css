@@ -687,6 +687,10 @@ textarea {
   padding: 24px;
 }
 
+.auth-modal[hidden] {
+  display: none !important;
+}
+
 .auth-backdrop {
   position: absolute;
   inset: 0;
