@@ -404,6 +404,7 @@ function openAuthModal() {
 
   updateAuthCopy();
   note.textContent = "After login or signup succeeds, checkout will continue automatically for the selected membership.";
+  modal.style.display = "grid";
   modal.hidden = false;
   modal.setAttribute("aria-hidden", "false");
   document.body.classList.add("modal-open");
@@ -415,6 +416,7 @@ function closeAuthModal() {
   if (!modal) return;
 
   modal.hidden = true;
+  modal.style.display = "none";
   modal.setAttribute("aria-hidden", "true");
   document.body.classList.remove("modal-open");
 }
