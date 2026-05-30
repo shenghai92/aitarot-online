@@ -1,4 +1,4 @@
-import { readdirSync, writeFileSync } from "node:fs";
+import { readdirSync, statSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 
 const siteUrl = "https://aitarot.online";
@@ -10,6 +10,18 @@ const priorityMap = {
   "astrology-guide.html": { changefreq: "weekly", priority: "0.8" },
   "yijing-guide.html": { changefreq: "weekly", priority: "0.8" },
   "bazi-guide.html": { changefreq: "weekly", priority: "0.8" },
+  "ai-tarot-accuracy.html": { changefreq: "weekly", priority: "0.8" },
+  "privacy-first-tarot-reading.html": { changefreq: "weekly", priority: "0.8" },
+  "love-tarot-bazi-guide.html": { changefreq: "weekly", priority: "0.8" },
+  "career-guidance-i-ching-astrology.html": { changefreq: "weekly", priority: "0.8" },
+  "best-free-love-tarot-reading.html": { changefreq: "weekly", priority: "0.8" },
+  "career-tarot-reading-online.html": { changefreq: "weekly", priority: "0.8" },
+  "bazi-compatibility-guide.html": { changefreq: "weekly", priority: "0.8" },
+  "tarot-for-no-contact.html": { changefreq: "weekly", priority: "0.8" },
+  "tarot-yes-or-no-love.html": { changefreq: "weekly", priority: "0.8" },
+  "should-i-text-him-tarot.html": { changefreq: "weekly", priority: "0.8" },
+  "is-this-relationship-over-tarot.html": { changefreq: "weekly", priority: "0.8" },
+  "when-will-i-get-a-job-tarot.html": { changefreq: "weekly", priority: "0.8" },
   "about.html": { changefreq: "monthly", priority: "0.6" },
   "privacy.html": { changefreq: "monthly", priority: "0.6" },
   "terms.html": { changefreq: "monthly", priority: "0.6" }
@@ -30,8 +42,10 @@ const urlEntries = htmlFiles
   .map((file) => {
     const path = file === "index.html" ? "/" : `/${file}`;
     const meta = priorityMap[file] || { changefreq: "weekly", priority: "0.7" };
+    const lastmod = statSync(join(rootDir, file)).mtime.toISOString().slice(0, 10);
     return `  <url>
     <loc>${siteUrl}${path}</loc>
+    <lastmod>${lastmod}</lastmod>
     <changefreq>${meta.changefreq}</changefreq>
     <priority>${meta.priority}</priority>
   </url>`;

@@ -759,6 +759,50 @@ textarea {
   margin-top: 28px;
 }
 
+.guide-links,
+.faq-shell {
+  max-width: 900px;
+  margin: 24px auto 0;
+  padding: 28px;
+  border-radius: 8px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow);
+}
+
+.guide-link-grid,
+.faq-grid {
+  display: grid;
+  gap: 16px;
+}
+
+.guide-link-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.guide-link-card,
+.faq-item {
+  padding: 18px;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.guide-link-card a {
+  color: var(--text);
+  text-decoration: none;
+}
+
+.guide-link-card a:hover,
+.guide-link-card a:focus-visible {
+  color: var(--accent);
+}
+
+.guide-link-card p,
+.faq-item p {
+  margin-bottom: 0;
+}
+
 .footer-grid {
   grid-template-columns: 1.6fr 1fr 1fr 1fr;
   padding-top: 20px;
@@ -807,7 +851,8 @@ textarea {
 
   .cards-grid,
   .difference-grid,
-  .footer-grid {
+  .footer-grid,
+  .guide-link-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }

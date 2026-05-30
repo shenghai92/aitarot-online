@@ -14,6 +14,14 @@
       content="Start with a free tarot reading, then unlock deeper paid formats with clearer structure, more detail, and focused love or career answers."
     />
     <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://aitarot.online/" />
+    <meta property="og:site_name" content="Love Tarot AI" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Love Tarot AI | Free Tarot Reading, Love Tarot, Career Tarot & Bazi" />
+    <meta
+      name="twitter:description"
+      content="Free tarot reading, specialized love and career readings, and Bazi-guided timing insight for users seeking privacy-first guidance."
+    />
     <meta name="robots" content="index,follow,max-image-preview:large" />
     <link rel="canonical" href="https://aitarot.online/" />
     <meta name="theme-color" content="#071120" />
@@ -24,6 +32,65 @@
     ></script>
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
     <link rel="stylesheet" href="styles.css?v=20260530b" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Organization",
+            "name": "Love Tarot AI",
+            "url": "https://aitarot.online/",
+            "logo": "https://aitarot.online/favicon.svg",
+            "email": "support@aitarot.online",
+            "sameAs": []
+          },
+          {
+            "@type": "WebSite",
+            "name": "Love Tarot AI",
+            "url": "https://aitarot.online/",
+            "description": "Privacy-first tarot, astrology, I Ching, and Bazi guidance for love, career, and personal clarity.",
+            "inLanguage": "en"
+          },
+          {
+            "@type": "FAQPage",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "How does AI tarot reading work on Love Tarot AI?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Users choose a focus, ask a real question, and receive a structured reading. Free readings stay brief, while paid tiers add more depth, more action steps, and stronger timing or focus layers."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "What is different about Love Focus and Career Focus readings?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Love Focus stays with relationship dynamics, communication, reciprocity, and timing. Career Focus stays with work pressure, opportunity, execution, and role fit without drifting into unrelated topics."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Do I need birth date and birth time for a tarot reading?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "No. Birth details are optional for general tarot guidance. They become more useful when a user wants astrology or Bazi-style timing layers."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Are monthly, quarterly, and annual plans different from one-time readings?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Yes. Membership plans require login because they are designed for returning access and longer-horizon use. One-time paid readings do not require an account."
+                }
+              }
+            ]
+          }
+        ]
+      }
+    </script>
   </head>
   <body>
     <header class="site-header">
@@ -173,13 +240,27 @@
               </label>
               <label class="field">
                 <span>Birth date (optional)</span>
-                <input id="reading-birth-date" type="date" />
+                <input
+                  id="reading-birth-date"
+                  type="text"
+                  inputmode="numeric"
+                  maxlength="10"
+                  placeholder="YYYY-MM-DD"
+                  autocomplete="off"
+                />
               </label>
             </div>
             <div class="field-grid">
               <label class="field">
                 <span>Birth time (optional)</span>
-                <input id="reading-birth-time" type="time" />
+                <input
+                  id="reading-birth-time"
+                  type="text"
+                  inputmode="numeric"
+                  maxlength="5"
+                  placeholder="HH:MM"
+                  autocomplete="off"
+                />
               </label>
               <label class="field">
                 <span>Current context (optional)</span>
@@ -303,6 +384,78 @@
             <p>The Four Pillars tradition, its ancient Chinese roots, and why users often want it layered onto Tarot.</p>
             <a class="btn btn-secondary" href="./bazi-guide.html">Read Bazi Guide</a>
           </article>
+          <article class="plan-card">
+            <span class="plan-type">Guide</span>
+            <h3>Is AI tarot accurate?</h3>
+            <p>A practical look at AI tarot accuracy, question quality, and what makes a reading actually useful.</p>
+            <a class="btn btn-secondary" href="./ai-tarot-accuracy.html">Read Accuracy Guide</a>
+          </article>
+          <article class="plan-card">
+            <span class="plan-type">Guide</span>
+            <h3>Why privacy-first tarot matters</h3>
+            <p>Why vulnerable users need minimal data collection, anonymity where possible, and respectful design.</p>
+            <a class="btn btn-secondary" href="./privacy-first-tarot-reading.html">Read Privacy Guide</a>
+          </article>
+          <article class="plan-card">
+            <span class="plan-type">Guide</span>
+            <h3>Love tarot with Bazi timing</h3>
+            <p>How relationship readings become stronger when emotional clarity and life-cycle timing are combined.</p>
+            <a class="btn btn-secondary" href="./love-tarot-bazi-guide.html">Read Love Timing Guide</a>
+          </article>
+          <article class="plan-card">
+            <span class="plan-type">Guide</span>
+            <h3>Career guidance with I Ching and astrology</h3>
+            <p>How timing, change, and work-transition questions can be framed more clearly with two complementary systems.</p>
+            <a class="btn btn-secondary" href="./career-guidance-i-ching-astrology.html">Read Career Timing Guide</a>
+          </article>
+          <article class="plan-card">
+            <span class="plan-type">Guide</span>
+            <h3>Best free love tarot reading</h3>
+            <p>What a useful free relationship reading should actually do, and when a deeper reading is the better move.</p>
+            <a class="btn btn-secondary" href="./best-free-love-tarot-reading.html">Read Free Love Guide</a>
+          </article>
+          <article class="plan-card">
+            <span class="plan-type">Guide</span>
+            <h3>Career tarot reading online</h3>
+            <p>How online career readings help with job pressure, role fit, opportunity timing, and transition questions.</p>
+            <a class="btn btn-secondary" href="./career-tarot-reading-online.html">Read Online Career Guide</a>
+          </article>
+          <article class="plan-card">
+            <span class="plan-type">Guide</span>
+            <h3>Bazi compatibility guide</h3>
+            <p>How compatibility, timing, and life rhythm work together in deeper relationship readings.</p>
+            <a class="btn btn-secondary" href="./bazi-compatibility-guide.html">Read Compatibility Guide</a>
+          </article>
+          <article class="plan-card">
+            <span class="plan-type">Guide</span>
+            <h3>Tarot for no contact situations</h3>
+            <p>How to think about silence, timing, boundaries, and whether reaching out creates clarity or more confusion.</p>
+            <a class="btn btn-secondary" href="./tarot-for-no-contact.html">Read No Contact Guide</a>
+          </article>
+          <article class="plan-card">
+            <span class="plan-type">Guide</span>
+            <h3>Tarot yes or no love questions</h3>
+            <p>How to use simple yes or no love questions without losing the emotional context that actually matters.</p>
+            <a class="btn btn-secondary" href="./tarot-yes-or-no-love.html">Read Yes or No Guide</a>
+          </article>
+          <article class="plan-card">
+            <span class="plan-type">Guide</span>
+            <h3>Should I text him tarot guide</h3>
+            <p>How to think about timing, tone, reciprocity, and boundaries before reaching out in a relationship.</p>
+            <a class="btn btn-secondary" href="./should-i-text-him-tarot.html">Read Texting Guide</a>
+          </article>
+          <article class="plan-card">
+            <span class="plan-type">Guide</span>
+            <h3>Is this relationship over tarot</h3>
+            <p>How to look at closure, repeated patterns, hope versus reality, and what emotional ending really means.</p>
+            <a class="btn btn-secondary" href="./is-this-relationship-over-tarot.html">Read Closure Guide</a>
+          </article>
+          <article class="plan-card">
+            <span class="plan-type">Guide</span>
+            <h3>When will I get a job tarot</h3>
+            <p>How job timing readings help with readiness, opportunity windows, and what to focus on while waiting.</p>
+            <a class="btn btn-secondary" href="./when-will-i-get-a-job-tarot.html">Read Job Timing Guide</a>
+          </article>
         </div>
       </section>
 
@@ -319,6 +472,64 @@
           <article class="privacy-card"><h3>Minimal collection</h3><p>Only collect details needed for the selected format.</p></article>
           <article class="privacy-card"><h3>No extra profiling</h3><p>Do not turn vulnerable questions into ad-tracking data.</p></article>
           <article class="privacy-card"><h3>Member boundary</h3><p>Only recurring paid plans create account-linked history.</p></article>
+        </div>
+      </section>
+
+      <section class="section" id="faq">
+        <div class="section-heading">
+          <p class="section-kicker">FAQ</p>
+          <h2>Helpful answers for tarot, Bazi, and AI reading questions.</h2>
+          <p>
+            These answers are written to match how users actually search: free tarot reading,
+            love tarot, career clarity, privacy-first readings, and Eastern timing systems like Bazi.
+          </p>
+        </div>
+        <div class="faq-shell">
+          <div class="faq-grid">
+            <article class="faq-item">
+              <h3>How does AI tarot work here?</h3>
+              <p>
+                The site combines structured symbolic reading with focused prompts, then adapts the answer
+                to the selected tier. Free results stay short. Paid results become deeper, more actionable,
+                and more tightly aligned to the user's question.
+              </p>
+            </article>
+            <article class="faq-item">
+              <h3>Is this a free tarot reading site?</h3>
+              <p>
+                Yes. Users can start with a free tarot reading before deciding whether they want a one-time
+                paid reading or a recurring membership for deeper ongoing guidance.
+              </p>
+            </article>
+            <article class="faq-item">
+              <h3>What makes the Bazi layer different?</h3>
+              <p>
+                Bazi adds a timing and life-cycle perspective from ancient Chinese wisdom traditions. It
+                helps users think about pattern, season, and readiness rather than emotion alone.
+              </p>
+            </article>
+            <article class="faq-item">
+              <h3>Can I use this for love or relationship questions only?</h3>
+              <p>
+                Yes. Love Focus is designed to stay with relationships, communication, trust, boundaries,
+                reciprocity, and next-step timing instead of drifting into unrelated life topics.
+              </p>
+            </article>
+            <article class="faq-item">
+              <h3>Can I use this for career and work questions only?</h3>
+              <p>
+                Yes. Career Focus is designed for role fit, work pressure, execution, opportunity timing,
+                leverage, and practical decision support without mixing in romance content.
+              </p>
+            </article>
+            <article class="faq-item">
+              <h3>Do you require personal data?</h3>
+              <p>
+                No. Name is optional. Birth details are optional. Only recurring membership plans need
+                account-based access, and the site is designed around a privacy-first, minimal-collection approach.
+              </p>
+            </article>
+          </div>
         </div>
       </section>
     </main>
