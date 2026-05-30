@@ -1,4 +1,4 @@
-﻿# AI Tarot Online (aitarot.online)
+# Love AI Tarot (aitarot.online)
 
 一个强调隐私与关怀的 AI 占卜落地页，适配 Cloudflare Pages 静态托管。
 
