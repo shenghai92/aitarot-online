@@ -374,6 +374,16 @@ async function fakeAccountAction(event, mode) {
 async function startCheckout(button) {
   const note = document.getElementById("member-note");
   const originalLabel = button.textContent;
+  const signupCard = document.getElementById("signup-form");
+  const signupEmail = document.getElementById("signup-email");
+
+  if (button.dataset.mode === "member" && !document.cookie.includes("member_session=")) {
+    note.textContent = "Please create an account or log in first, then start your membership checkout.";
+    signupCard?.scrollIntoView({ behavior: "smooth", block: "center" });
+    signupEmail?.focus();
+    return;
+  }
+
   button.disabled = true;
   button.textContent = "Opening checkout...";
 
@@ -391,6 +401,8 @@ async function startCheckout(button) {
     if (!response.ok || !result.checkoutUrl) {
       if (button.dataset.mode === "member") {
         note.textContent = result.message || "Please log in before starting a membership checkout.";
+        signupCard?.scrollIntoView({ behavior: "smooth", block: "center" });
+        signupEmail?.focus();
       } else {
         showPurchaseMessage(result.message || "Checkout could not be started.");
       }
