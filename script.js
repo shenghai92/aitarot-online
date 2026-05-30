@@ -39,11 +39,11 @@ const singlePlans = [
     name: "Starter Reading",
     price: "$4.9",
     type: "One-time",
-    desc: "A short paid answer that goes one layer beyond the free reading.",
+    desc: "A short paid reading that adds one more layer of interpretation beyond the free pull.",
     features: [
-      "1 question",
-      "More personal interpretation than free",
-      "1 clear next step",
+      "2 concise reading paragraphs",
+      "1 question focus",
+      "1 clear action step",
       "No account required"
     ],
     cta: "Unlock Starter",
@@ -54,11 +54,11 @@ const singlePlans = [
     name: "Core Reading",
     price: "$14.9",
     type: "One-time",
-    desc: "Structured Tarot + Bazi reading with more depth and more usable output.",
+    desc: "A structured reading for users who want a clearer interpretation, stronger guidance, and a more usable answer.",
     features: [
-      "1-2 questions",
-      "3-card structure",
+      "3 structured reading paragraphs",
       "3 action points",
+      "1 follow-up line",
       "No account required"
     ],
     cta: "Unlock Core",
@@ -69,11 +69,11 @@ const singlePlans = [
     name: "Deep Reading",
     price: "$19",
     type: "One-time",
-    desc: "A deeper result for users who want stronger timing and decision guidance.",
+    desc: "A deeper reading for users who want timing, priority, and decision pressure mapped more clearly.",
     features: [
-      "2-3 questions",
+      "4 detailed reading paragraphs",
+      "4 action points",
       "7-30 day guidance",
-      "Risk and priority framing",
       "No account required"
     ],
     cta: "Unlock Deep",
@@ -87,11 +87,11 @@ const focusPlans = [
     name: "Love Focus",
     price: "$29",
     type: "One-time specialized",
-    desc: "Only relationship, connection, silence, reciprocity, and next-step communication.",
+    desc: "A specialized relationship reading focused only on connection, silence, reciprocity, trust, and next-step communication.",
     features: [
-      "Love-only result scope",
+      "4 relationship-only paragraphs",
+      "4 love-focused action steps",
       "No career drift",
-      "Communication guidance",
       "No account required"
     ],
     cta: "Unlock Love Focus",
@@ -102,11 +102,11 @@ const focusPlans = [
     name: "Career Focus",
     price: "$29",
     type: "One-time specialized",
-    desc: "Only work, role fit, opportunity timing, risk, and execution guidance.",
+    desc: "A specialized work reading focused only on role fit, opportunity timing, execution, leverage, and risk.",
     features: [
-      "Career-only result scope",
+      "4 career-only paragraphs",
+      "4 work-focused action steps",
       "No romance drift",
-      "Decision and risk guidance",
       "No account required"
     ],
     cta: "Unlock Career Focus",
@@ -120,12 +120,12 @@ const memberPlans = [
     name: "Monthly Membership",
     price: "$29",
     type: "Recurring",
-    desc: "Login-based monthly access for repeat users in active situations.",
+    desc: "Login-based monthly access for repeat users who want ongoing readings with short-cycle check-ins.",
     features: [
       "Requires account",
-      "Saved member access",
-      "Better for repeat questions",
-      "Supports ongoing use"
+      "4 ongoing-reading paragraphs",
+      "Weekly focus + later-this-month watchpoints",
+      "Saved member access"
     ],
     cta: "Start Monthly",
     focus: "general"
@@ -135,11 +135,12 @@ const memberPlans = [
     name: "Quarterly Membership",
     price: "$59",
     type: "Recurring",
-    desc: "Longer view support with account-based history and return access.",
+    desc: "A 30-90 day reading format for transitions, trend review, and strategic reassessment.",
     features: [
       "Requires account",
-      "Quarter-by-quarter check-ins",
-      "Best for transitions",
+      "5 trend-review paragraphs",
+      "5 action points",
+      "30-90 day reassessment guidance",
       "Saved member path"
     ],
     cta: "Start Quarterly",
@@ -150,11 +151,12 @@ const memberPlans = [
     name: "Annual Membership",
     price: "$199",
     type: "Recurring",
-    desc: "For recurring users who want the longest support horizon and account history.",
+    desc: "The longest-horizon reading tier for users who want broader life pattern guidance across the year ahead.",
     features: [
       "Requires account",
-      "Long-horizon access",
-      "Best value for repeat use",
+      "6 long-horizon paragraphs",
+      "5 action points",
+      "Quarter pacing across the year",
       "Saved member path"
     ],
     cta: "Start Annual",

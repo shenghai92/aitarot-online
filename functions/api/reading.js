@@ -27,8 +27,8 @@ export async function onRequestPost(context) {
     });
   }
 
-  const aiDraft = await fetchAiDraft(context, { focus, tier, question, profile });
-  const response = buildReading({ focus, tier, question, profile, aiDraft });
+  const aiReading = await fetchAiReading(context, { focus, tier, question, profile });
+  const response = buildReading({ focus, tier, question, profile, aiReading });
 
   return new Response(JSON.stringify(response), {
     headers: {
@@ -81,7 +81,7 @@ async function verifyTierAccess(request, sessionSecret, tier) {
   return null;
 }
 
-function buildReading({ focus, tier, question, profile, aiDraft }) {
+function buildReading({ focus, tier, question, profile, aiReading }) {
   const cleanQuestion = question || fallbackQuestion(focus);
   const focusMap = {
     love: {
@@ -211,12 +211,14 @@ function buildReading({ focus, tier, question, profile, aiDraft }) {
         : focusMap.general;
 
   const chosenTier = tierMap[tier] || tierMap.free;
-  const paragraphs = buildParagraphs(cleanQuestion, chosenFocus, chosenTier, profile, aiDraft);
-  const actionList = chosenFocus.actions.slice(0, chosenTier.listCount);
+  const fallbackParagraphs = buildParagraphs(cleanQuestion, chosenFocus, chosenTier, profile);
+  const paragraphs = normalizeParagraphs(aiReading?.paragraphs, fallbackParagraphs, chosenTier.paragraphs);
+  const actionList = normalizeActions(aiReading?.actions, chosenFocus.actions, chosenTier.listCount);
   const followupText =
-    chosenTier.followups > 0
+    aiReading?.followup?.trim() ||
+    (chosenTier.followups > 0
       ? `${chosenTier.followups} follow-up slots available in this tier.`
-      : "No follow-up thread included at this level.";
+      : "No follow-up thread included at this level.");
 
   return {
     tier: chosenTier.title,
@@ -224,14 +226,14 @@ function buildReading({ focus, tier, question, profile, aiDraft }) {
     symbol: chosenFocus.symbol,
     depth: chosenTier.depth,
     profileUsed: summarizeProfile(profile),
-    summary: chosenFocus.summary,
+    summary: aiReading?.summary?.trim() || chosenFocus.summary,
     paragraphs,
     actions: actionList,
     followup: followupText
   };
 }
 
-function buildParagraphs(question, focus, tier, profile, aiDraft) {
+function buildParagraphs(question, focus, tier, profile) {
   const profileLine = summarizeProfile(profile);
   const first =
     `Question focus: "${question}". ${focus.symbol} suggests that the most important movement here is not noise, but pattern recognition.`;
@@ -247,9 +249,6 @@ function buildParagraphs(question, focus, tier, profile, aiDraft) {
     `That longer horizon is especially useful when the issue repeats: the same person, the same work dynamic, the same kind of pressure, or the same fear showing up in a different shape.`;
 
   const all = [first, second, third, fourth, fifth, sixth];
-  if (aiDraft) {
-    all[tier.paragraphs === 1 ? 0 : 1] = aiDraft;
-  }
   return all.slice(0, tier.paragraphs);
 }
 
@@ -268,7 +267,27 @@ function summarizeProfile(profile) {
   return parts.join("; ");
 }
 
-async function fetchAiDraft(context, { focus, tier, question, profile }) {
+function normalizeParagraphs(aiParagraphs, fallbackParagraphs, count) {
+  if (Array.isArray(aiParagraphs) && aiParagraphs.length > 0) {
+    const cleaned = aiParagraphs.map((item) => String(item || "").trim()).filter(Boolean);
+    if (cleaned.length > 0) {
+      return cleaned.slice(0, count);
+    }
+  }
+  return fallbackParagraphs.slice(0, count);
+}
+
+function normalizeActions(aiActions, fallbackActions, count) {
+  if (Array.isArray(aiActions) && aiActions.length > 0) {
+    const cleaned = aiActions.map((item) => String(item || "").trim()).filter(Boolean);
+    if (cleaned.length > 0) {
+      return cleaned.slice(0, count);
+    }
+  }
+  return fallbackActions.slice(0, count);
+}
+
+async function fetchAiReading(context, { focus, tier, question, profile }) {
   const apiKey = context.env.API_KEY;
   const apiBase = normalizeApiBase(context.env.API_BASE_URL);
   const apiModel = context.env.API_MODEL;
@@ -284,14 +303,29 @@ async function fetchAiDraft(context, { focus, tier, question, profile }) {
         ? "You write only about work, career decisions, opportunity timing, execution, and professional risk. Do not discuss romance or unrelated emotional themes."
         : "You write about present emotional clarity and short-term life direction in a practical tone.";
 
-  const tierPrompt =
-    tier === "free"
-      ? "Keep it compact, around 80-120 words."
-      : tier === "starter"
-        ? "Keep it concise, around 140-180 words."
-        : tier === "core"
-          ? "Write around 220-320 words with structured practical guidance."
-          : "Write around 320-520 words with stronger structure and more concrete action guidance.";
+  const tierPromptMap = {
+    free:
+      "Return exactly 1 concise paragraph, 1 action step, and a short follow-up line. Keep the whole response brief and useful.",
+    starter:
+      "Return exactly 2 concise paragraphs, 1 action step, and a short follow-up line. This should feel clearly deeper than free but still compact.",
+    core:
+      "Return exactly 3 substantial paragraphs, 3 action steps, and 1 follow-up line. Use a structured reading style with clearer interpretation and decision guidance.",
+    deep:
+      "Return exactly 4 substantial paragraphs, 4 action steps, and a follow-up line that mentions the next 7-30 days. Include timing, risk, and priority guidance.",
+    love:
+      "Return exactly 4 relationship-only paragraphs, 4 action steps, and a follow-up line. Keep the scope strictly on love, reciprocity, communication, distance, trust, and timing.",
+    career:
+      "Return exactly 4 career-only paragraphs, 4 action steps, and a follow-up line. Keep the scope strictly on work, opportunity, execution, role fit, and timing.",
+    monthly:
+      "Return exactly 4 paragraphs, 4 action steps, and a follow-up line written as an ongoing member reading. Include what to watch this week and what to revisit later this month.",
+    quarterly:
+      "Return exactly 5 paragraphs, 5 action steps, and a follow-up line written as a 30-90 day review. Include trend, timing, and what to reassess next month.",
+    yearly:
+      "Return exactly 6 paragraphs, 5 action steps, and a follow-up line written as a long-horizon reading. Include the broader year pattern and how to pace the next quarter."
+  };
+
+  const outputContract =
+    'Reply with valid JSON only. Use this shape: {"summary":"...","paragraphs":["..."],"actions":["..."],"followup":"..."}. No markdown fences, no extra text.';
 
   try {
     const response = await fetch(apiBase, {
@@ -306,7 +340,13 @@ async function fetchAiDraft(context, { focus, tier, question, profile }) {
           { role: "system", content: systemPrompt },
           {
             role: "user",
-            content: `${tierPrompt}\nQuestion: ${question}\nFocus: ${focus}\nTier: ${tier}\nOptional profile: ${summarizeProfile(profile) || "none"}`
+            content:
+              `${tierPromptMap[tier] || tierPromptMap.deep}\n` +
+              `${outputContract}\n` +
+              `Question: ${question}\n` +
+              `Focus: ${focus}\n` +
+              `Tier: ${tier}\n` +
+              `Optional profile: ${summarizeProfile(profile) || "none"}`
           }
         ]
       })
@@ -317,9 +357,39 @@ async function fetchAiDraft(context, { focus, tier, question, profile }) {
     }
 
     const data = await response.json();
-    return data.choices?.[0]?.message?.content?.trim() || data.result?.response?.trim() || "";
+    const raw =
+      data.choices?.[0]?.message?.content?.trim() ||
+      data.result?.response?.trim() ||
+      data.output_text?.trim() ||
+      "";
+
+    return parseAiReading(raw);
   } catch {
-    return "";
+    return null;
+  }
+}
+
+function parseAiReading(raw) {
+  const text = String(raw || "").trim();
+  if (!text) return null;
+
+  const cleaned = text
+    .replace(/^```json\s*/i, "")
+    .replace(/^```\s*/i, "")
+    .replace(/\s*```$/i, "")
+    .trim();
+
+  try {
+    const parsed = JSON.parse(cleaned);
+    if (!parsed || typeof parsed !== "object") return null;
+    return {
+      summary: String(parsed.summary || "").trim(),
+      paragraphs: Array.isArray(parsed.paragraphs) ? parsed.paragraphs : [],
+      actions: Array.isArray(parsed.actions) ? parsed.actions : [],
+      followup: String(parsed.followup || "").trim()
+    };
+  } catch {
+    return null;
   }
 }
 
