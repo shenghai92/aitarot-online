@@ -248,7 +248,7 @@ function buildParagraphs(question, focus, tier, profile, aiDraft) {
 
   const all = [first, second, third, fourth, fifth, sixth];
   if (aiDraft) {
-    all[1] = aiDraft;
+    all[tier.paragraphs === 1 ? 0 : 1] = aiDraft;
   }
   return all.slice(0, tier.paragraphs);
 }
