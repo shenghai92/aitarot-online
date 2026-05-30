@@ -98,7 +98,8 @@ function buildReading({ focus, tier, question, profile, aiReading }) {
         "say the simplest true thing first",
         "watch for reciprocity instead of chasing intensity",
         "protect your dignity while staying warm",
-        "focus on whether closeness is mutual, not only desired"
+        "focus on whether closeness is mutual, not only desired",
+        "review whether the connection is growing steadier over time, not just more intense in the moment"
       ]
     },
     career: {
@@ -115,7 +116,8 @@ function buildReading({ focus, tier, question, profile, aiReading }) {
         "focus on one practical priority this week",
         "measure the opportunity cost of waiting",
         "make your next move visible and specific",
-        "separate fear of change from actual downside"
+        "separate fear of change from actual downside",
+        "check whether the current path is building leverage or only consuming effort"
       ]
     },
     general: {
@@ -132,7 +134,8 @@ function buildReading({ focus, tier, question, profile, aiReading }) {
         "reduce noise before forcing a decision",
         "name what is true right now",
         "choose one stabilizing action",
-        "avoid dramatic conclusions before the pattern is clear"
+        "avoid dramatic conclusions before the pattern is clear",
+        "revisit the same question after one concrete step to see what actually changed"
       ]
     }
   };
