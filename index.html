@@ -22,7 +22,8 @@
       src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4966684354825438"
       crossorigin="anonymous"
     ></script>
-    <link rel="stylesheet" href="styles.css?v=20260529e" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <link rel="stylesheet" href="styles.css?v=20260530a" />
   </head>
   <body>
     <header class="site-header">
@@ -235,7 +236,7 @@
         <div class="member-shell">
           <div class="member-card">
             <h3>Member login</h3>
-            <p>Required only for recurring plans.</p>
+            <p>Required only for recurring plans. Membership buttons will open this flow automatically.</p>
             <form id="login-form" class="member-form">
               <label class="field">
                 <span>Email</span>
@@ -265,7 +266,7 @@
           </div>
         </div>
         <div class="member-note" id="member-note">
-          Account actions use backend APIs. The database binding needs to be added in Cloudflare before login goes live.
+          Recurring plans use account-based access. Click a Monthly, Quarterly, or Annual button and we will guide the user into signup or login first, then continue checkout automatically.
         </div>
       </section>
 
@@ -322,6 +323,51 @@
       </section>
     </main>
 
+    <div class="auth-modal" id="auth-modal" hidden aria-hidden="true">
+      <div class="auth-backdrop" data-auth-close="true"></div>
+      <div class="auth-dialog" role="dialog" aria-modal="true" aria-labelledby="auth-title">
+        <button class="auth-close" id="auth-close" type="button" aria-label="Close membership sign in dialog">Close</button>
+        <p class="section-kicker">Membership access</p>
+        <h2 id="auth-title">Create an account or log in to continue.</h2>
+        <p class="auth-copy" id="auth-copy">
+          Monthly, Quarterly, and Annual memberships are attached to a member account so users can return and keep access.
+        </p>
+        <div class="auth-panels">
+          <div class="member-card auth-card">
+            <h3>Log in</h3>
+            <form id="auth-login-form" class="member-form">
+              <label class="field">
+                <span>Email</span>
+                <input id="auth-login-email" type="email" autocomplete="email" />
+              </label>
+              <label class="field">
+                <span>Password</span>
+                <input id="auth-login-password" type="password" autocomplete="current-password" />
+              </label>
+              <button class="btn btn-secondary" type="submit">Log in and continue</button>
+            </form>
+          </div>
+          <div class="member-card auth-card">
+            <h3>Create account</h3>
+            <form id="auth-signup-form" class="member-form">
+              <label class="field">
+                <span>Email</span>
+                <input id="auth-signup-email" type="email" autocomplete="email" />
+              </label>
+              <label class="field">
+                <span>Password</span>
+                <input id="auth-signup-password" type="password" autocomplete="new-password" />
+              </label>
+              <button class="btn btn-primary" type="submit">Create account and continue</button>
+            </form>
+          </div>
+        </div>
+        <div class="member-note auth-note" id="auth-note">
+          After login or signup succeeds, checkout will continue automatically for the selected membership.
+        </div>
+      </div>
+    </div>
+
     <footer class="site-footer">
       <div class="footer-grid">
         <div class="footer-brand">
@@ -369,7 +415,7 @@
       </div>
     </footer>
 
-    <script src="script.js?v=20260529e"></script>
+    <script src="script.js?v=20260530a"></script>
   </body>
 </html>
 

@@ -49,6 +49,10 @@ body::before {
   opacity: 0.9;
 }
 
+body.modal-open {
+  overflow: hidden;
+}
+
 a {
   color: inherit;
 }
@@ -674,6 +678,68 @@ textarea {
   margin-top: 16px;
 }
 
+.auth-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+}
+
+.auth-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(2, 8, 18, 0.7);
+  backdrop-filter: blur(10px);
+}
+
+.auth-dialog {
+  position: relative;
+  z-index: 1;
+  width: min(980px, 100%);
+  padding: 28px;
+  border-radius: 16px;
+  border: 1px solid rgba(121, 209, 255, 0.24);
+  background:
+    linear-gradient(180deg, rgba(12, 25, 49, 0.98), rgba(7, 17, 32, 0.98)),
+    radial-gradient(circle at top right, rgba(121, 209, 255, 0.16), transparent 36%);
+  box-shadow: 0 40px 90px rgba(0, 0, 0, 0.5);
+}
+
+.auth-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  min-height: 40px;
+  padding: 0 14px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text);
+  cursor: pointer;
+}
+
+.auth-copy {
+  max-width: 44rem;
+  color: var(--muted);
+}
+
+.auth-panels {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  margin-top: 22px;
+}
+
+.auth-card {
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.auth-note {
+  margin-top: 18px;
+}
+
 .guide-shell {
   max-width: 900px;
   margin: 36px auto;
@@ -748,7 +814,8 @@ textarea {
   .free-layout,
   .bazi-layout,
   .room-layout,
-  .member-shell {
+  .member-shell,
+  .auth-panels {
     grid-template-columns: 1fr;
   }
 
@@ -782,7 +849,8 @@ textarea {
   }
 
   .hero-copy,
-  .orbit-card {
+  .orbit-card,
+  .auth-dialog {
     padding: 24px;
   }
 }

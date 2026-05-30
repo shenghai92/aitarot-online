@@ -164,6 +164,8 @@ const memberPlans = [
   }
 ];
 
+let pendingCheckout = null;
+
 function renderPlanCards(containerId, plans) {
   const container = document.getElementById(containerId);
   if (!container) return;
@@ -243,7 +245,7 @@ function createCustomSelect(select) {
   button.className = "custom-select-button";
   button.setAttribute("aria-haspopup", "listbox");
   button.setAttribute("aria-expanded", "false");
-  button.innerHTML = `<span class="custom-select-label"></span><span class="custom-select-caret">▾</span>`;
+  button.innerHTML = `<span class="custom-select-label"></span><span class="custom-select-caret">&#9662;</span>`;
 
   const list = document.createElement("div");
   list.className = "custom-select-list";
@@ -347,6 +349,21 @@ async function submitReading(event) {
   }
 }
 
+async function performAuthRequest(mode, email, password) {
+  const response = await fetch(`/api/${mode}`, {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ email, password })
+  });
+  const result = await response.json();
+
+  if (!response.ok) {
+    throw new Error(result.message || "Authentication failed.");
+  }
+
+  return result;
+}
+
 async function fakeAccountAction(event, mode) {
   event.preventDefault();
   const note = document.getElementById("member-note");
@@ -359,31 +376,51 @@ async function fakeAccountAction(event, mode) {
   }
 
   try {
-    const response = await fetch(`/api/${mode}`, {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify({ email, password })
-    });
-    const result = await response.json();
+    const result = await performAuthRequest(mode, email, password);
     note.textContent = result.message;
-  } catch {
-    note.textContent = "Account actions are not live yet. Add the D1 database binding in Cloudflare first.";
+  } catch (error) {
+    note.textContent = error.message || "Account action failed.";
   }
 }
 
-async function startCheckout(button) {
-  const note = document.getElementById("member-note");
-  const originalLabel = button.textContent;
-  const signupCard = document.getElementById("signup-form");
-  const signupEmail = document.getElementById("signup-email");
+function updateAuthCopy() {
+  const copy = document.getElementById("auth-copy");
+  if (!copy) return;
 
-  if (button.dataset.mode === "member" && !document.cookie.includes("member_session=")) {
-    note.textContent = "Please create an account or log in first, then start your membership checkout.";
-    signupCard?.scrollIntoView({ behavior: "smooth", block: "center" });
-    signupEmail?.focus();
+  if (!pendingCheckout) {
+    copy.textContent =
+      "Monthly, Quarterly, and Annual memberships are attached to a member account so users can return and keep access.";
     return;
   }
 
+  const tierName = memberPlans.find((plan) => plan.tier === pendingCheckout.tier)?.name || "membership";
+  copy.textContent = `${tierName} needs account-based access. Log in or create an account and checkout will continue automatically.`;
+}
+
+function openAuthModal() {
+  const modal = document.getElementById("auth-modal");
+  const note = document.getElementById("auth-note");
+  if (!modal) return;
+
+  updateAuthCopy();
+  note.textContent = "After login or signup succeeds, checkout will continue automatically for the selected membership.";
+  modal.hidden = false;
+  modal.setAttribute("aria-hidden", "false");
+  document.body.classList.add("modal-open");
+  document.getElementById("auth-signup-email")?.focus();
+}
+
+function closeAuthModal() {
+  const modal = document.getElementById("auth-modal");
+  if (!modal) return;
+
+  modal.hidden = true;
+  modal.setAttribute("aria-hidden", "true");
+  document.body.classList.remove("modal-open");
+}
+
+async function attemptCheckout({ tier, focus, mode, button }) {
+  const originalLabel = button.textContent;
   button.disabled = true;
   button.textContent = "Opening checkout...";
 
@@ -391,34 +428,71 @@ async function startCheckout(button) {
     const response = await fetch("/api/checkout", {
       method: "POST",
       headers: { "content-type": "application/json" },
-      body: JSON.stringify({
-        tier: button.dataset.tier,
-        focus: button.dataset.focus
-      })
+      body: JSON.stringify({ tier, focus })
     });
     const result = await response.json();
 
     if (!response.ok || !result.checkoutUrl) {
-      if (button.dataset.mode === "member") {
-        note.textContent = result.message || "Please log in before starting a membership checkout.";
-        signupCard?.scrollIntoView({ behavior: "smooth", block: "center" });
-        signupEmail?.focus();
+      if (response.status === 401 && mode === "member") {
+        pendingCheckout = { tier, focus, mode, button };
+        document.getElementById("member-note").textContent =
+          result.message || "Please log in before starting a membership checkout.";
+        openAuthModal();
+      } else if (mode === "member") {
+        document.getElementById("member-note").textContent =
+          result.message || "Membership checkout could not be started right now.";
       } else {
         showPurchaseMessage(result.message || "Checkout could not be started.");
       }
       return;
     }
 
+    pendingCheckout = null;
     window.location.href = result.checkoutUrl;
   } catch {
-    if (button.dataset.mode === "member") {
-      note.textContent = "Checkout is not available right now. Please try again.";
+    if (mode === "member") {
+      document.getElementById("member-note").textContent = "Checkout is not available right now. Please try again.";
     } else {
       showPurchaseMessage("Checkout is not available right now. Please try again.");
     }
   } finally {
     button.disabled = false;
     button.textContent = originalLabel;
+  }
+}
+
+async function startCheckout(button) {
+  await attemptCheckout({
+    tier: button.dataset.tier,
+    focus: button.dataset.focus,
+    mode: button.dataset.mode,
+    button
+  });
+}
+
+async function handleAuthModalSubmit(event, mode) {
+  event.preventDefault();
+  const note = document.getElementById("auth-note");
+  const prefix = `auth-${mode}`;
+  const email = document.getElementById(`${prefix}-email`).value.trim();
+  const password = document.getElementById(`${prefix}-password`).value;
+
+  if (!email || !password) {
+    note.textContent = "Please enter both email and password.";
+    return;
+  }
+
+  note.textContent = mode === "signup" ? "Creating account..." : "Logging in...";
+
+  try {
+    const result = await performAuthRequest(mode, email, password);
+    note.textContent = `${result.message} Continuing to checkout...`;
+    if (pendingCheckout) {
+      closeAuthModal();
+      await attemptCheckout(pendingCheckout);
+    }
+  } catch (error) {
+    note.textContent = error.message || "Authentication failed.";
   }
 }
 
@@ -437,6 +511,7 @@ function handlePurchaseState() {
     const tierSelect = document.getElementById("reading-tier");
     if ([...tierSelect.options].some((option) => option.value === tier)) {
       tierSelect.value = tier;
+      tierSelect.dispatchEvent(new Event("change", { bubbles: true }));
     }
     showPurchaseMessage(`Payment confirmed for ${tier}. You can enter your question below now.`);
     window.history.replaceState({}, "", `${window.location.pathname}#reading-room`);
@@ -455,16 +530,34 @@ function setupCustomSelects() {
   });
 }
 
+function setupAuthModal() {
+  document.getElementById("auth-close")?.addEventListener("click", closeAuthModal);
+  document.getElementById("auth-modal")?.addEventListener("click", (event) => {
+    if (event.target instanceof HTMLElement && event.target.dataset.authClose === "true") {
+      closeAuthModal();
+    }
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      closeAuthModal();
+    }
+  });
+}
+
 renderPlanCards("single-plans", singlePlans);
 renderPlanCards("focus-plans", focusPlans);
 renderPlanCards("member-plans", memberPlans);
 setupCustomSelects();
+setupAuthModal();
 
 document.getElementById("free-draw").addEventListener("click", drawFreeReading);
 document.getElementById("free-topic").addEventListener("change", drawFreeReading);
 document.getElementById("reading-form").addEventListener("submit", submitReading);
 document.getElementById("login-form").addEventListener("submit", (event) => fakeAccountAction(event, "login"));
 document.getElementById("signup-form").addEventListener("submit", (event) => fakeAccountAction(event, "signup"));
+document.getElementById("auth-login-form").addEventListener("submit", (event) => handleAuthModalSubmit(event, "login"));
+document.getElementById("auth-signup-form").addEventListener("submit", (event) => handleAuthModalSubmit(event, "signup"));
 document.querySelectorAll(".checkout-trigger").forEach((button) => {
   button.addEventListener("click", () => startCheckout(button));
 });
