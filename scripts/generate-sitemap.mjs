@@ -31,6 +31,7 @@ const priorityMap = {
   "2026-fire-horse-year-for-water-signs-career.html": { changefreq: "weekly", priority: "0.8" },
   "2026-entrepreneur-bazi-luck-pillar-guide.html": { changefreq: "weekly", priority: "0.8" },
   "2026-should-i-quit-my-job-tarot-i-ching.html": { changefreq: "weekly", priority: "0.8" },
+  "2026-should-i-accept-this-job-offer-tarot.html": { changefreq: "weekly", priority: "0.8" },
   "2026-final-round-interview-tarot-guide.html": { changefreq: "weekly", priority: "0.8" },
   "2026-will-they-reach-out-no-contact.html": { changefreq: "weekly", priority: "0.8" },
   "2026-star-tarot-vs-bazi-wood-luck.html": { changefreq: "weekly", priority: "0.8" },

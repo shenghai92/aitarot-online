@@ -166,6 +166,18 @@ const memberPlans = [
 
 let pendingCheckout = null;
 
+const tierFocusDefaults = {
+  free: "general",
+  starter: "general",
+  core: "general",
+  deep: "general",
+  love: "love",
+  career: "career",
+  monthly: "general",
+  quarterly: "general",
+  yearly: "general"
+};
+
 function renderPlanCards(containerId, plans) {
   const container = document.getElementById(containerId);
   if (!container) return;
@@ -316,6 +328,30 @@ function readingPayload() {
     birthTime: document.getElementById("reading-birth-time").value,
     context: document.getElementById("reading-context").value.trim()
   };
+}
+
+function syncReadingInputsFromTier() {
+  const tierSelect = document.getElementById("reading-tier");
+  const focusSelect = document.getElementById("reading-focus");
+  const questionInput = document.getElementById("reading-question");
+  if (!tierSelect || !focusSelect) return;
+
+  const tier = tierSelect.value;
+  const forcedFocus = tierFocusDefaults[tier];
+  if (forcedFocus && focusSelect.value !== forcedFocus) {
+    focusSelect.value = forcedFocus;
+    focusSelect.dispatchEvent(new Event("change", { bubbles: true }));
+  }
+
+  if (!questionInput || questionInput.value.trim()) return;
+
+  if (tier === "love") {
+    questionInput.placeholder = "Example: Should I reach out this week, or wait for clearer reciprocity?";
+  } else if (tier === "career") {
+    questionInput.placeholder = "Example: Should I stay in this role, or start moving toward a new opportunity?";
+  } else {
+    questionInput.placeholder = "Example: Should I reach out this week? / Is this the right role for me now?";
+  }
 }
 
 async function submitReading(event) {
@@ -556,6 +592,7 @@ setupAuthModal();
 document.getElementById("free-draw").addEventListener("click", drawFreeReading);
 document.getElementById("free-topic").addEventListener("change", drawFreeReading);
 document.getElementById("reading-form").addEventListener("submit", submitReading);
+document.getElementById("reading-tier").addEventListener("change", syncReadingInputsFromTier);
 document.getElementById("login-form").addEventListener("submit", (event) => fakeAccountAction(event, "login"));
 document.getElementById("signup-form").addEventListener("submit", (event) => fakeAccountAction(event, "signup"));
 document.getElementById("auth-login-form").addEventListener("submit", (event) => handleAuthModalSubmit(event, "login"));
@@ -565,4 +602,5 @@ document.querySelectorAll(".checkout-trigger").forEach((button) => {
 });
 
 drawFreeReading();
+syncReadingInputsFromTier();
 handlePurchaseState();
