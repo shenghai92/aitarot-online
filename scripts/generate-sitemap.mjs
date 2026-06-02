@@ -54,7 +54,7 @@ const htmlFiles = readdirSync(rootDir)
 
 const urlEntries = htmlFiles
   .map((file) => {
-    const path = file === "index.html" ? "/" : `/${file}`;
+    const path = file === "index.html" ? "/" : `/${file.replace(/\.html$/, "")}`;
     const meta = priorityMap[file] || { changefreq: "weekly", priority: "0.7" };
     const lastmod = statSync(join(rootDir, file)).mtime.toISOString().slice(0, 10);
     return `  <url>

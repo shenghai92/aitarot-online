@@ -33,6 +33,15 @@ npm run dev
 # 打开 http://localhost:8787
 ```
 
+## URL 规范
+- 线上正式 URL 一律使用无扩展名形式，例如 `https://aitarot.online/tarot-yes-or-no-love`
+- 本地文件仍然可以保留为 `tarot-yes-or-no-love.html`，但以下内容必须统一使用无扩展名 URL：
+- `canonical`
+- `og:url`
+- JSON-LD 里的 `url` / `mainEntityOfPage`
+- 站内链接
+- `sitemap.xml`
+
 ## 新增页面后的抓取更新
 如果以后新增根目录下的 `.html` 页面，执行：
 
@@ -40,4 +49,4 @@ npm run dev
 npm run sitemap
 ```
 
-这会自动扫描当前项目根目录里的所有 `.html` 页面并更新 `sitemap.xml`。
+这会自动扫描当前项目根目录里的所有 `.html` 页面，并自动输出无扩展名版本的 `sitemap.xml` URL。
