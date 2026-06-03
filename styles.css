@@ -1,17 +1,19 @@
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=DM+Sans:wght@400;500;600&display=swap");
+
 :root {
-  --bg: #071120;
-  --bg-soft: #0d1b32;
-  --panel: rgba(10, 23, 46, 0.82);
-  --panel-strong: rgba(8, 18, 36, 0.92);
-  --line: rgba(147, 190, 255, 0.18);
-  --line-strong: rgba(147, 190, 255, 0.34);
-  --text: #e8f0ff;
-  --muted: #98add2;
-  --accent: #79d1ff;
-  --accent-strong: #25a8ff;
-  --warm: #f4d68e;
-  --ok: #8df2c0;
-  --shadow: 0 30px 80px rgba(0, 0, 0, 0.35);
+  --bg: #102033;
+  --bg-soft: #1a2f49;
+  --panel: rgba(24, 42, 66, 0.76);
+  --panel-strong: rgba(19, 35, 56, 0.9);
+  --line: rgba(189, 211, 239, 0.22);
+  --line-strong: rgba(150, 195, 241, 0.36);
+  --text: #eef4ff;
+  --muted: #c3d2ea;
+  --accent: #98d0ff;
+  --accent-strong: #5aa9ec;
+  --warm: #f0d9a4;
+  --ok: #9de2c6;
+  --shadow: 0 28px 72px rgba(10, 20, 35, 0.24);
 }
 
 * {
@@ -26,13 +28,14 @@ html {
 body {
   margin: 0;
   color: var(--text);
-  font-family: "Georgia", "Times New Roman", serif;
-  line-height: 1.6;
+  font-family: "DM Sans", "Segoe UI", sans-serif;
+  font-size: 1.04rem;
+  line-height: 1.72;
   background:
-    radial-gradient(circle at 20% 15%, rgba(121, 209, 255, 0.16), transparent 24%),
-    radial-gradient(circle at 80% 12%, rgba(141, 242, 192, 0.12), transparent 20%),
-    radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.08), transparent 12%),
-    linear-gradient(180deg, #030811 0%, #071120 34%, #0b1630 100%);
+    radial-gradient(circle at 18% 12%, rgba(175, 215, 255, 0.22), transparent 26%),
+    radial-gradient(circle at 84% 14%, rgba(172, 233, 214, 0.12), transparent 24%),
+    radial-gradient(circle at 52% 2%, rgba(255, 246, 220, 0.08), transparent 18%),
+    linear-gradient(180deg, #13253b 0%, #1b314d 42%, #223b5c 100%);
 }
 
 body::before {
@@ -41,12 +44,27 @@ body::before {
   inset: 0;
   pointer-events: none;
   background-image:
-    radial-gradient(circle at 10% 20%, rgba(255, 255, 255, 0.8) 0 1px, transparent 1.4px),
-    radial-gradient(circle at 22% 68%, rgba(121, 209, 255, 0.75) 0 1px, transparent 1.5px),
-    radial-gradient(circle at 76% 24%, rgba(255, 255, 255, 0.7) 0 1px, transparent 1.4px),
-    radial-gradient(circle at 84% 72%, rgba(244, 214, 142, 0.7) 0 1.1px, transparent 1.4px),
-    radial-gradient(circle at 46% 36%, rgba(255, 255, 255, 0.5) 0 1px, transparent 1.4px);
-  opacity: 0.9;
+    radial-gradient(circle at 9% 18%, rgba(255, 255, 255, 0.72) 0 1px, transparent 1.5px),
+    radial-gradient(circle at 22% 66%, rgba(152, 208, 255, 0.6) 0 1.1px, transparent 1.6px),
+    radial-gradient(circle at 75% 22%, rgba(255, 255, 255, 0.68) 0 1px, transparent 1.5px),
+    radial-gradient(circle at 86% 70%, rgba(240, 217, 164, 0.55) 0 1.15px, transparent 1.6px),
+    radial-gradient(circle at 46% 34%, rgba(255, 255, 255, 0.4) 0 1px, transparent 1.5px),
+    radial-gradient(circle at 64% 58%, rgba(255, 255, 255, 0.33) 0 0.9px, transparent 1.4px),
+    radial-gradient(circle at 30% 82%, rgba(174, 215, 255, 0.38) 0 1px, transparent 1.6px);
+  opacity: 0.68;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 12% 30%, rgba(255, 255, 255, 0.06), transparent 0 28%),
+    radial-gradient(circle at 74% 18%, rgba(255, 247, 232, 0.05), transparent 0 22%),
+    radial-gradient(circle at 58% 78%, rgba(152, 208, 255, 0.05), transparent 0 24%);
+  mix-blend-mode: screen;
+  opacity: 0.7;
 }
 
 body.modal-open {
@@ -62,8 +80,8 @@ a {
   top: 0;
   z-index: 20;
   backdrop-filter: blur(16px);
-  background: rgba(4, 10, 21, 0.74);
-  border-bottom: 1px solid rgba(147, 190, 255, 0.12);
+  background: rgba(18, 34, 53, 0.72);
+  border-bottom: 1px solid rgba(189, 211, 239, 0.16);
 }
 
 .nav-shell,
@@ -104,12 +122,14 @@ a {
 .brand-name,
 .footer-brandname {
   display: block;
-  font-size: 1.12rem;
+  font-family: "Cormorant Garamond", "Georgia", serif;
+  font-size: 1.28rem;
+  letter-spacing: 0.01em;
 }
 
 .brand-sub {
   display: block;
-  font-size: 0.85rem;
+  font-size: 0.92rem;
   color: var(--muted);
 }
 
@@ -123,7 +143,7 @@ a {
 .top-nav a {
   color: var(--muted);
   text-decoration: none;
-  font-size: 0.96rem;
+  font-size: 0.98rem;
 }
 
 .top-nav a:hover,
@@ -189,16 +209,23 @@ h2,
 h3 {
   margin: 0;
   letter-spacing: 0;
+  font-family: "Cormorant Garamond", "Georgia", serif;
+  font-weight: 500;
 }
 
 h1 {
-  font-size: clamp(2.6rem, 4vw, 4.6rem);
-  line-height: 1.06;
+  font-size: clamp(2.3rem, 3.8vw, 3.7rem);
+  line-height: 1.1;
 }
 
 h2 {
-  font-size: clamp(1.7rem, 3vw, 2.8rem);
-  line-height: 1.12;
+  font-size: clamp(1.65rem, 2.6vw, 2.35rem);
+  line-height: 1.18;
+}
+
+h3 {
+  font-size: clamp(1.25rem, 1.8vw, 1.7rem);
+  line-height: 1.24;
 }
 
 .hero-text,
@@ -222,9 +249,9 @@ h2 {
   max-width: 52rem;
   margin-top: 16px;
   padding: 16px 18px;
-  border-left: 3px solid rgba(121, 209, 255, 0.65);
-  background: rgba(121, 209, 255, 0.08);
-  color: #dce9ff;
+  border-left: 3px solid rgba(152, 208, 255, 0.54);
+  background: rgba(255, 255, 255, 0.08);
+  color: #f1f5ff;
 }
 
 .hero-actions {
@@ -250,13 +277,13 @@ h2 {
 }
 
 .btn-primary {
-  color: #03111f;
-  background: linear-gradient(135deg, var(--accent), var(--ok));
+  color: #0b1827;
+  background: linear-gradient(135deg, #b6defb, #b8ebd5);
 }
 
 .btn-secondary {
   color: var(--text);
-  background: rgba(255, 255, 255, 0.04);
+  background: rgba(255, 255, 255, 0.06);
   border-color: var(--line);
 }
 
@@ -283,7 +310,7 @@ h2 {
   padding: 12px 14px;
   border: 1px solid var(--line);
   border-radius: 8px;
-  background: rgba(255, 255, 255, 0.04);
+  background: rgba(255, 255, 255, 0.055);
 }
 
 .tag-chip strong,
@@ -412,7 +439,7 @@ select option {
   padding: 0 14px;
   border-radius: 8px;
   border: 1px solid var(--line-strong);
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.065);
   color: var(--text);
   font: inherit;
   display: flex;
@@ -445,7 +472,7 @@ select option {
   padding: 8px;
   border-radius: 12px;
   border: 1px solid rgba(121, 209, 255, 0.28);
-  background: rgba(8, 18, 36, 0.98);
+  background: rgba(24, 42, 66, 0.98);
   box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
   backdrop-filter: blur(16px);
 }
@@ -479,7 +506,7 @@ input {
   padding: 0 14px;
   border-radius: 8px;
   border: 1px solid var(--line-strong);
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.065);
   color: var(--text);
   font: inherit;
   color-scheme: dark;
@@ -502,7 +529,7 @@ textarea {
   padding: 14px;
   border-radius: 8px;
   border: 1px solid var(--line-strong);
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.065);
   color: var(--text);
   font: inherit;
   resize: vertical;
@@ -552,7 +579,7 @@ textarea {
 }
 
 .reading-result h3 {
-  font-size: 1.4rem;
+  font-size: 1.6rem;
 }
 
 .reading-meta {
@@ -624,7 +651,7 @@ textarea {
 
 .plan-card .price {
   margin: 12px 0 6px;
-  font-size: 1.8rem;
+  font-size: 1.65rem;
   color: var(--warm);
 }
 
@@ -706,9 +733,9 @@ textarea {
   border-radius: 16px;
   border: 1px solid rgba(121, 209, 255, 0.24);
   background:
-    linear-gradient(180deg, rgba(12, 25, 49, 0.98), rgba(7, 17, 32, 0.98)),
-    radial-gradient(circle at top right, rgba(121, 209, 255, 0.16), transparent 36%);
-  box-shadow: 0 40px 90px rgba(0, 0, 0, 0.5);
+    linear-gradient(180deg, rgba(28, 46, 70, 0.98), rgba(19, 35, 56, 0.98)),
+    radial-gradient(circle at top right, rgba(152, 208, 255, 0.16), transparent 36%);
+  box-shadow: 0 34px 80px rgba(10, 20, 35, 0.36);
 }
 
 .auth-close {
@@ -747,7 +774,7 @@ textarea {
 .guide-shell {
   max-width: 900px;
   margin: 36px auto;
-  padding: 28px;
+  padding: 32px;
 }
 
 .guide-shell h1,
@@ -768,6 +795,20 @@ textarea {
   background: var(--panel);
   border: 1px solid var(--line);
   box-shadow: var(--shadow);
+}
+
+.guide-shell p,
+.guide-links p,
+.faq-item p,
+.section-heading p,
+.plan-card p,
+.member-card p,
+.reading-section p,
+.reading-list,
+.helper-copy,
+.template-note,
+.member-note {
+  font-size: 1.02rem;
 }
 
 .guide-link-grid,
