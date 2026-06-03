@@ -1,12 +1,12 @@
 const productLinks = {
-  starter: "https://www.creem.io/payment/prod_30q7e53WSC3RYYkA5SiUj3",
-  core: "https://www.creem.io/payment/prod_4DGdRimLy3vYK1XB1GmWjN",
-  deep: "https://www.creem.io/payment/prod_6VIbvZBOw32APnthsAhSDG",
-  love: "https://www.creem.io/payment/prod_7ifdb45YSixCackbjYu1zD",
-  career: "https://www.creem.io/payment/prod_6mJB2TxJ6M5D5TvLfKnEDx",
-  monthly: "https://www.creem.io/payment/prod_zRezGp0kvYaQzQIW55Eu6",
-  quarterly: "https://www.creem.io/payment/prod_63Le2mp7GII2xkjES4CuQ9",
-  yearly: "https://www.creem.io/payment/prod_33LtzEJl1mQlsnciNsYWm6"
+  starter: "https://www.creem.io/payment/prod_61I74fvu3kUngyK4quyBSm",
+  core: "https://www.creem.io/payment/prod_4gUAL3Aw2Ye9t2G3fbAsRn",
+  deep: "https://www.creem.io/payment/prod_3esjB6J1OpLSmjHBt0SiHW",
+  love: "https://www.creem.io/payment/prod_4iLmyD1r3XkpXM9TayTYhU",
+  career: "https://www.creem.io/payment/prod_2Mrtx7uQlHhdJcrnRgw6OQ",
+  monthly: "https://www.creem.io/payment/prod_51P5FmR4mmpy83it7vgh76",
+  quarterly: "https://www.creem.io/payment/prod_3RH7Z74dRNrKdXeqrwbbCH",
+  yearly: "https://www.creem.io/payment/prod_S2r9T21BKRvOxzUjxrIzS"
 };
 
 const freeTopics = {

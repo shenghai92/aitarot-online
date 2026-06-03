@@ -1,17 +1,17 @@
 import { createSignedToken } from "./_lib/access.js";
 
 const oneTimeProducts = {
-  prod_30q7e53WSC3RYYkA5SiUj3: "starter",
-  prod_4DGdRimLy3vYK1XB1GmWjN: "core",
-  prod_6VIbvZBOw32APnthsAhSDG: "deep",
-  prod_7ifdb45YSixCackbjYu1zD: "love",
-  prod_6mJB2TxJ6M5D5TvLfKnEDx: "career"
+  prod_61I74fvu3kUngyK4quyBSm: "starter",
+  prod_4gUAL3Aw2Ye9t2G3fbAsRn: "core",
+  prod_3esjB6J1OpLSmjHBt0SiHW: "deep",
+  prod_4iLmyD1r3XkpXM9TayTYhU: "love",
+  prod_2Mrtx7uQlHhdJcrnRgw6OQ: "career"
 };
 
 const memberProducts = {
-  prod_zRezGp0kvYaQzQIW55Eu6: "monthly",
-  prod_63Le2mp7GII2xkjES4CuQ9: "quarterly",
-  prod_33LtzEJl1mQlsnciNsYWm6: "yearly"
+  prod_51P5FmR4mmpy83it7vgh76: "monthly",
+  prod_3RH7Z74dRNrKdXeqrwbbCH: "quarterly",
+  prod_S2r9T21BKRvOxzUjxrIzS: "yearly"
 };
 
 export async function onRequestGet(context) {
