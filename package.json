@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "npx serve . -l 8787",
     "sitemap": "node scripts/generate-sitemap.mjs",
+    "validate": "node scripts/validate-site.mjs",
     "deploy:guide": "echo Deploy via Cloudflare Pages: build command empty, output directory /"
   }
 }
