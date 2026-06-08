@@ -3,6 +3,11 @@ import { join } from "node:path";
 
 const rootDir = process.cwd();
 const siteUrl = "https://aitarot.online";
+const expectedRobots = [
+  "User-agent: *",
+  "Allow: /",
+  `Sitemap: ${siteUrl}/sitemap.xml`
+];
 const htmlFiles = readdirSync(rootDir)
   .filter((file) => file.endsWith(".html"))
   .sort((a, b) => a.localeCompare(b));
@@ -15,6 +20,7 @@ const expectedUrlForFile = (file) =>
   file === "index.html" ? `${siteUrl}/` : `${siteUrl}/${file.replace(/\.html$/, "")}`;
 
 const sitemapText = readFileSync(join(rootDir, "sitemap.xml"), "utf8");
+const robotsText = readFileSync(join(rootDir, "robots.txt"), "utf8");
 const sitemapUrls = new Set(
   Array.from(sitemapText.matchAll(/<loc>(.*?)<\/loc>/g), (match) => match[1].trim())
 );
@@ -89,6 +95,27 @@ for (const url of sitemapUrls) {
     issues.push(`sitemap.xml: URL has no matching HTML file -> ${url}`);
   }
 }
+
+if (robotsText.charCodeAt(0) === 0xfeff) {
+  issues.push("robots.txt: contains UTF-8 BOM, expected plain UTF-8 text");
+}
+
+const robotsLines = robotsText
+  .split(/\r?\n/)
+  .map((line) => line.trim())
+  .filter(Boolean);
+
+if (robotsLines.length !== expectedRobots.length) {
+  issues.push(
+    `robots.txt: expected ${expectedRobots.length} non-empty lines but found ${robotsLines.length}`
+  );
+}
+
+expectedRobots.forEach((line, index) => {
+  if (robotsLines[index] !== line) {
+    issues.push(`robots.txt: line ${index + 1} mismatch, expected "${line}"`);
+  }
+});
 
 if (issues.length > 0) {
   console.error("Site validation failed:");
