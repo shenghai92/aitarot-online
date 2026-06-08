@@ -1,12 +1,19 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
   <defs>
-    <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#79d1ff" />
-      <stop offset="100%" stop-color="#25a8ff" />
+    <linearGradient id="bg" x1="8%" y1="8%" x2="92%" y2="92%">
+      <stop offset="0%" stop-color="#8fd8ff" />
+      <stop offset="100%" stop-color="#2f8cff" />
+    </linearGradient>
+    <linearGradient id="ring" x1="18%" y1="18%" x2="82%" y2="82%">
+      <stop offset="0%" stop-color="#fff1c8" />
+      <stop offset="100%" stop-color="#f2d184" />
     </linearGradient>
   </defs>
-  <rect width="64" height="64" rx="14" fill="url(#g)" />
-  <circle cx="32" cy="32" r="22" fill="rgba(3,17,31,0.12)" />
-  <path d="M32 14l4.7 12.8L50 32l-13.3 5.2L32 50l-4.7-12.8L14 32l13.3-5.2L32 14z" fill="#03111f" opacity="0.22"/>
-  <text x="32" y="39" text-anchor="middle" font-size="20" font-family="Georgia, serif" font-weight="700" fill="#03111f">LT</text>
+  <rect width="64" height="64" rx="16" fill="#081423" />
+  <rect x="4" y="4" width="56" height="56" rx="14" fill="url(#bg)" />
+  <circle cx="32" cy="34" r="18" fill="#0a1830" opacity="0.9" />
+  <circle cx="32" cy="34" r="16.5" fill="none" stroke="url(#ring)" stroke-width="2.5" />
+  <path d="M22 19.5l1.9 4.7 4.9 1.9-4.9 1.9-1.9 4.7-1.9-4.7-4.9-1.9 4.9-1.9z" fill="#fff3cf" />
+  <path d="M27 25.5h4v13.5h10v4h-14z" fill="#fff7dc" />
+  <path d="M33 25.5h13v4h-4.5V43h-4V29.5H33z" fill="#fff7dc" />
 </svg>
