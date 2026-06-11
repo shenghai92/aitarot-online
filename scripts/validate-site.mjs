@@ -8,6 +8,11 @@ const expectedRobots = [
   "Allow: /",
   `Sitemap: ${siteUrl}/sitemap.xml`
 ];
+const expectedRedirects = [
+  "https://www.aitarot.online/* https://aitarot.online/:splat 301!",
+  "http://www.aitarot.online/* https://aitarot.online/:splat 301!",
+  "http://aitarot.online/* https://aitarot.online/:splat 301!"
+];
 const htmlFiles = readdirSync(rootDir)
   .filter((file) => file.endsWith(".html"))
   .sort((a, b) => a.localeCompare(b));
@@ -21,6 +26,7 @@ const expectedUrlForFile = (file) =>
 
 const sitemapText = readFileSync(join(rootDir, "sitemap.xml"), "utf8");
 const robotsText = readFileSync(join(rootDir, "robots.txt"), "utf8");
+const redirectsText = readFileSync(join(rootDir, "_redirects"), "utf8");
 const sitemapUrls = new Set(
   Array.from(sitemapText.matchAll(/<loc>(.*?)<\/loc>/g), (match) => match[1].trim())
 );
@@ -43,6 +49,14 @@ for (const file of htmlFiles) {
     issues.push(`${file}: missing og:url meta`);
   } else if (ogUrlMatch[1] !== expectedUrl) {
     issues.push(`${file}: og:url mismatch, expected ${expectedUrl} but found ${ogUrlMatch[1]}`);
+  }
+
+  if (!source.includes('<script src="ga4-proxy.js"></script>')) {
+    issues.push(`${file}: missing ga4-proxy.js loader`);
+  }
+
+  if (!source.includes("cookie_domain: 'aitarot.online'")) {
+    issues.push(`${file}: missing GA4 cookie_domain configuration`);
   }
 
   const mainEntityMatches = Array.from(
@@ -114,6 +128,21 @@ if (robotsLines.length !== expectedRobots.length) {
 expectedRobots.forEach((line, index) => {
   if (robotsLines[index] !== line) {
     issues.push(`robots.txt: line ${index + 1} mismatch, expected "${line}"`);
+  }
+});
+
+const redirectLines = redirectsText
+  .split(/\r?\n/)
+  .map((line) => line.trim())
+  .filter(Boolean);
+
+if (redirectLines.length < expectedRedirects.length) {
+  issues.push(`_redirects: expected at least ${expectedRedirects.length} rules`);
+}
+
+expectedRedirects.forEach((line) => {
+  if (!redirectLines.includes(line)) {
+    issues.push(`_redirects: missing rule "${line}"`);
   }
 });
 

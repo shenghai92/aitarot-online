@@ -45,13 +45,16 @@
         "inLanguage": "en"
       }
     </script>
+    <script src="ga4-proxy.js"></script>
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-LZC9CZG7RE"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-      gtag('config', 'G-LZC9CZG7RE');
+      gtag('config', 'G-LZC9CZG7RE', {
+        cookie_domain: 'aitarot.online'
+      });
     </script>
   </head>
   <body>
