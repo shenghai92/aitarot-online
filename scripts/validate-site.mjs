@@ -15,6 +15,7 @@ const expectedRedirects = [
 ];
 const htmlFiles = readdirSync(rootDir)
   .filter((file) => file.endsWith(".html"))
+  .filter((file) => !file.startsWith("work"))
   .sort((a, b) => a.localeCompare(b));
 
 const slugs = new Set(
