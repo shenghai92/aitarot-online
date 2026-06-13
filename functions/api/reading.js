@@ -22,8 +22,9 @@ export async function onRequestPost(context) {
       return json(accessError, accessError.status);
     }
 
-    const aiReading = await fetchAiReading(context, { focus, tier, question, profile });
-    const response = buildReading({ focus, tier, question, profile, aiReading });
+    const aiResult = await fetchAiReading(context, { focus, tier, question, profile });
+    const response = buildReading({ focus, tier, question, profile, aiReading: aiResult.reading });
+    response.aiDebug = aiResult.debug;
     return json(response);
   } catch (error) {
     const fallback = buildReading({
@@ -311,7 +312,17 @@ async function fetchAiReading(context, { focus, tier, question, profile }) {
   const apiModel = context.env.API_MODEL;
 
   if (!apiKey || !apiBase || !apiModel || !question) {
-    return "";
+    return {
+      reading: null,
+      debug: {
+        usedAi: false,
+        reason: "missing-config-or-question",
+        hasApiKey: Boolean(apiKey),
+        hasApiBase: Boolean(apiBase),
+        hasApiModel: Boolean(apiModel),
+        hasQuestion: Boolean(question)
+      }
+    };
   }
 
   const systemPrompt =
@@ -371,7 +382,19 @@ async function fetchAiReading(context, { focus, tier, question, profile }) {
     });
 
     if (!response.ok) {
-      return "";
+      const errorText = await response.text();
+      return {
+        reading: null,
+        debug: {
+          usedAi: false,
+          reason: "upstream-http-error",
+          status: response.status,
+          statusText: response.statusText || "",
+          bodyPreview: String(errorText || "").slice(0, 400),
+          apiBase,
+          apiModel
+        }
+      };
     }
 
     const data = await response.json();
@@ -381,9 +404,40 @@ async function fetchAiReading(context, { focus, tier, question, profile }) {
       data.output_text?.trim() ||
       "";
 
-    return parseAiReading(raw);
+    const parsed = parseAiReading(raw);
+    if (!parsed) {
+      return {
+        reading: null,
+        debug: {
+          usedAi: false,
+          reason: "unparseable-upstream-payload",
+          apiBase,
+          apiModel,
+          responseKeys: Object.keys(data || {}).slice(0, 20),
+          rawPreview: String(raw || "").slice(0, 400)
+        }
+      };
+    }
+
+    return {
+      reading: parsed,
+      debug: {
+        usedAi: true,
+        reason: "ok",
+        apiBase,
+        apiModel
+      }
+    };
   } catch {
-    return null;
+    return {
+      reading: null,
+      debug: {
+        usedAi: false,
+        reason: "fetch-threw",
+        apiBase,
+        apiModel
+      }
+    };
   }
 }
 
