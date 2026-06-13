@@ -327,34 +327,61 @@ async function fetchAiReading(context, { focus, tier, question, profile }) {
 
   const systemPrompt =
     focus === "love" || tier === "love"
-      ? "You write only about romantic relationships, emotional reciprocity, communication, boundaries, and next-step connection. Do not discuss career, money, or unrelated life themes."
+      ? [
+          "You are a warm, grounded tarot-style relationship reader.",
+          "Write only about romantic relationships, emotional reciprocity, communication, boundaries, attachment, trust, and next-step connection.",
+          "Do not discuss career, money, or unrelated life themes.",
+          "Sound emotionally perceptive and specific, not mystical for the sake of it.",
+          "Avoid generic therapy filler, vague affirmations, and repeated stock phrases.",
+          "Name the central relationship pattern clearly, then give one practical next step."
+        ].join(" ")
       : focus === "career" || tier === "career"
-        ? "You write only about work, career decisions, opportunity timing, execution, and professional risk. Do not discuss romance or unrelated emotional themes."
-        : "You write about present emotional clarity and short-term life direction in a practical tone.";
+        ? [
+            "You are a grounded career tarot-style reader with strong decision clarity.",
+            "Write only about work, career decisions, opportunity timing, execution, professional risk, leverage, burnout, fit, and momentum.",
+            "Do not discuss romance or unrelated emotional themes.",
+            "Sound specific, strategic, and direct rather than corporate or generic.",
+            "Avoid vague motivation language and empty encouragement.",
+            "Name the real career tension clearly, then give one practical next step."
+          ].join(" ")
+        : [
+            "You are a practical tarot-style reader for present emotional clarity and life direction.",
+            "Sound calm, insightful, and concrete.",
+            "Avoid therapy clichés, horoscope vagueness, and repetitive phrasing.",
+            "Name the core pattern, the pressure underneath it, and one realistic next move."
+          ].join(" ");
 
   const tierPromptMap = {
     free:
-      "Return exactly 1 concise paragraph, 1 action step, and a short follow-up line. Keep the whole response brief and useful.",
+      "Return exactly 1 concise but vivid paragraph, 1 practical action step, and 1 short follow-up line. Keep it brief, specific, and clearly tied to the user's real question.",
     starter:
-      "Return exactly 2 concise paragraphs, 1 action step, and a short follow-up line. This should feel clearly deeper than free but still compact.",
+      "Return exactly 2 concise paragraphs, 1 practical action step, and 1 short follow-up line. This should feel noticeably deeper than free by naming the main pattern and the likely risk or opportunity.",
     core:
-      "Return exactly 3 substantial paragraphs, 3 action steps, and 1 follow-up line. Use a structured reading style with clearer interpretation and decision guidance.",
+      "Return exactly 3 substantial paragraphs, 3 action steps, and 1 follow-up line. Use a structured reading style with clearer interpretation, emotional or strategic pattern recognition, and decision guidance.",
     deep:
-      "Return exactly 4 substantial paragraphs, 4 action steps, and a follow-up line that mentions the next 7-30 days. Include timing, risk, and priority guidance.",
+      "Return exactly 4 substantial paragraphs, 4 action steps, and a follow-up line that mentions the next 7-30 days. Include timing, risk, hidden pressure, and priority guidance. Make this feel layered rather than repetitive.",
     love:
-      "Return exactly 4 relationship-only paragraphs, 4 action steps, and a follow-up line. Keep the scope strictly on love, reciprocity, communication, distance, trust, and timing.",
+      "Return exactly 4 relationship-only paragraphs, 4 action steps, and a follow-up line. Keep the scope strictly on love, reciprocity, communication, distance, trust, timing, and relationship pattern. Do not drift into career or general life advice.",
     career:
-      "Return exactly 4 career-only paragraphs, 4 action steps, and a follow-up line. Keep the scope strictly on work, opportunity, execution, role fit, and timing.",
+      "Return exactly 4 career-only paragraphs, 4 action steps, and a follow-up line. Keep the scope strictly on work, opportunity, execution, role fit, timing, leverage, and professional risk. Do not drift into romance or general life advice.",
     monthly:
-      "Return exactly 4 paragraphs, 4 action steps, and a follow-up line written as an ongoing member reading. Include what to watch this week and what to revisit later this month.",
+      "Return exactly 4 paragraphs, 4 action steps, and a follow-up line written as an ongoing member reading. Include what to watch this week and what to revisit later this month. Make it feel like a check-in, not a one-off answer.",
     quarterly:
-      "Return exactly 5 paragraphs, 5 action steps, and a follow-up line written as a 30-90 day review. Include trend, timing, and what to reassess next month.",
+      "Return exactly 5 paragraphs, 5 action steps, and a follow-up line written as a 30-90 day review. Include trend, timing, momentum shifts, and what to reassess next month.",
     yearly:
-      "Return exactly 6 paragraphs, 5 action steps, and a follow-up line written as a long-horizon reading. Include the broader year pattern and how to pace the next quarter."
+      "Return exactly 6 paragraphs, 5 action steps, and a follow-up line written as a long-horizon reading. Include the broader year pattern, the current phase, and how to pace the next quarter."
   };
 
   const outputContract =
     'Reply with valid JSON only. Use this shape: {"summary":"...","paragraphs":["..."],"actions":["..."],"followup":"..."}. No markdown fences, no extra text.';
+
+  const styleContract = [
+    "Write in plain, natural English.",
+    "Do not mention tarot cards unless needed for tone; focus on the reading itself.",
+    "Do not repeat the question back in slightly different words for the whole answer.",
+    "Do not use filler such as 'trust the universe', 'everything happens for a reason', or 'you already know the answer'.",
+    "Make each paragraph add a new layer: pattern, pressure, likely dynamic, and next move."
+  ].join(" ");
 
   try {
     const response = await fetch(apiBase, {
@@ -371,6 +398,7 @@ async function fetchAiReading(context, { focus, tier, question, profile }) {
             role: "user",
             content:
               `${tierPromptMap[tier] || tierPromptMap.deep}\n` +
+              `${styleContract}\n` +
               `${outputContract}\n` +
               `Question: ${question}\n` +
               `Focus: ${focus}\n` +
