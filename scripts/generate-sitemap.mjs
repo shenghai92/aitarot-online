@@ -17,6 +17,9 @@ const priorityMap = {
   "best-free-love-tarot-reading.html": { changefreq: "weekly", priority: "0.8" },
   "career-tarot-reading-online.html": { changefreq: "weekly", priority: "0.8" },
   "bazi-compatibility-guide.html": { changefreq: "weekly", priority: "0.8" },
+  "ai-tarot-bazi-relationship-timing.html": { changefreq: "weekly", priority: "0.8" },
+  "best-job-search-timing-tarot-bazi.html": { changefreq: "weekly", priority: "0.8" },
+  "relationship-problems-tarot-bazi.html": { changefreq: "weekly", priority: "0.8" },
   "tarot-for-no-contact.html": { changefreq: "weekly", priority: "0.8" },
   "tarot-yes-or-no-love.html": { changefreq: "weekly", priority: "0.8" },
   "should-i-text-him-tarot.html": { changefreq: "weekly", priority: "0.8" },
@@ -89,11 +92,37 @@ const urlEntries = htmlFiles
   })
   .join("\n");
 
-const xml = `<?xml version="1.0" encoding="UTF-8"?>
+const urlSetXml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${urlEntries}
 </urlset>
 `;
 
-writeFileSync(join(rootDir, "sitemap.xml"), xml, "utf8");
-console.log(`Generated sitemap.xml with ${htmlFiles.length} URLs.`);
+const sitemapFiles = [
+  "sitemap-pages.xml",
+  "sitemap-google.xml",
+  "sitemap-bing.xml"
+];
+
+for (const file of sitemapFiles) {
+  writeFileSync(join(rootDir, file), urlSetXml, "utf8");
+}
+
+const sitemapIndexEntries = sitemapFiles
+  .map((file) => {
+    const lastmod = statSync(join(rootDir, file)).mtime.toISOString().slice(0, 10);
+    return `  <sitemap>
+    <loc>${siteUrl}/${file}</loc>
+    <lastmod>${lastmod}</lastmod>
+  </sitemap>`;
+  })
+  .join("\n");
+
+const sitemapIndexXml = `<?xml version="1.0" encoding="UTF-8"?>
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${sitemapIndexEntries}
+</sitemapindex>
+`;
+
+writeFileSync(join(rootDir, "sitemap.xml"), sitemapIndexXml, "utf8");
+console.log(`Generated sitemap index and ${htmlFiles.length} URLs across ${sitemapFiles.length} sitemap files.`);
