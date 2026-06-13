@@ -161,63 +161,81 @@ function buildReading({ focus, tier, question, profile, aiReading }) {
       depth: "Light",
       paragraphs: 1,
       listCount: 1,
-      followups: 0
+      followups: 0,
+      timeHorizon: "right now",
+      emphasis: "one clear emotional or practical signal"
     },
     starter: {
       title: "Starter Reading",
       depth: "Short paid",
       paragraphs: 2,
       listCount: 1,
-      followups: 0
+      followups: 0,
+      timeHorizon: "the next few days",
+      emphasis: "the main pattern plus the immediate risk"
     },
     core: {
       title: "Core Reading",
       depth: "Structured",
       paragraphs: 3,
       listCount: 3,
-      followups: 1
+      followups: 1,
+      timeHorizon: "the next 1-3 weeks",
+      emphasis: "pattern, pressure, and decision structure"
     },
     deep: {
       title: "Deep Reading",
       depth: "Extended",
       paragraphs: 4,
       listCount: 4,
-      followups: 3
+      followups: 3,
+      timeHorizon: "the next 7-30 days",
+      emphasis: "hidden pressure, timing, and what changes first"
     },
     love: {
       title: "Love Focus",
       depth: "Specialized",
       paragraphs: 4,
       listCount: 4,
-      followups: 2
+      followups: 2,
+      timeHorizon: "the next 2-4 weeks in the connection",
+      emphasis: "relationship pattern, reciprocity, and contact strategy"
     },
     career: {
       title: "Career Focus",
       depth: "Specialized",
       paragraphs: 4,
       listCount: 4,
-      followups: 2
+      followups: 2,
+      timeHorizon: "the next 2-6 weeks at work",
+      emphasis: "professional leverage, risk, and next move"
     },
     monthly: {
       title: "Monthly Membership Reading",
       depth: "Ongoing",
       paragraphs: 4,
       listCount: 4,
-      followups: 2
+      followups: 2,
+      timeHorizon: "this week and later this month",
+      emphasis: "check-in rhythm, short-cycle changes, and watchpoints"
     },
     quarterly: {
       title: "Quarterly Membership Reading",
       depth: "Trend review",
       paragraphs: 5,
       listCount: 5,
-      followups: 3
+      followups: 3,
+      timeHorizon: "the next 30-90 days",
+      emphasis: "trend line, turning points, and reassessment windows"
     },
     yearly: {
       title: "Annual Membership Reading",
       depth: "Long horizon",
       paragraphs: 6,
       listCount: 5,
-      followups: 4
+      followups: 4,
+      timeHorizon: "this quarter inside the wider year",
+      emphasis: "phase-of-year guidance, pacing, and long-cycle pattern"
     }
   };
 
@@ -258,13 +276,13 @@ function buildParagraphs(question, focus, tier, profile) {
   const second =
     `In ${focus.label.toLowerCase()} terms, the reading emphasizes ${focus.themes[0]}, then ${focus.themes[1]}. That means the next move should be simple, deliberate, and easier to sustain than to regret.`;
   const third =
-    `The stronger paid layers add more than length: they add structure, timing, and decision pressure mapping. At the ${tier.title} level, the answer should guide action, not only mood.${profileLine ? ` Input used: ${profileLine}.` : ""}`;
+    `At the ${tier.title} level, the reading widens into ${tier.emphasis} across ${tier.timeHorizon}, so the answer should guide action, not only mood.${profileLine ? ` Input used: ${profileLine}.` : ""}`;
   const fourth =
     `The reading also points to ${focus.themes[2]}. This is where hesitation can either protect you or trap you, depending on whether you are waiting for clarity or avoiding contact with reality.`;
   const fifth =
-    `Longer memberships widen the lens. Instead of answering only today's emotional question, they track how the same pattern evolves over weeks or months.`;
+    `Longer memberships widen the lens further. Instead of answering only today's emotional question, they track how the same pattern evolves over weeks or months and what should be reassessed next.`;
   const sixth =
-    `That longer horizon is especially useful when the issue repeats: the same person, the same work dynamic, the same kind of pressure, or the same fear showing up in a different shape.`;
+    `That long-horizon view is especially useful when the issue repeats: the same person, the same work dynamic, the same kind of pressure, or the same fear showing up in a different shape.`;
 
   const all = [first, second, third, fourth, fifth, sixth];
   return all.slice(0, tier.paragraphs);
@@ -289,7 +307,7 @@ function normalizeParagraphs(aiParagraphs, fallbackParagraphs, count) {
   if (Array.isArray(aiParagraphs) && aiParagraphs.length > 0) {
     const cleaned = aiParagraphs.map((item) => String(item || "").trim()).filter(Boolean);
     if (cleaned.length > 0) {
-      return cleaned.slice(0, count);
+      return cleaned.concat(fallbackParagraphs).slice(0, count);
     }
   }
   return fallbackParagraphs.slice(0, count);
@@ -299,7 +317,7 @@ function normalizeActions(aiActions, fallbackActions, count) {
   if (Array.isArray(aiActions) && aiActions.length > 0) {
     const cleaned = aiActions.map((item) => String(item || "").trim()).filter(Boolean);
     if (cleaned.length > 0) {
-      return cleaned.slice(0, count);
+      return cleaned.concat(fallbackActions).slice(0, count);
     }
   }
   return fallbackActions.slice(0, count);
@@ -379,7 +397,8 @@ async function fetchAiReading(context, { focus, tier, question, profile }) {
     "Do not mention tarot cards unless needed for tone; focus on the reading itself.",
     "Do not repeat the question back in slightly different words for the whole answer.",
     "Do not use filler such as 'trust the universe', 'everything happens for a reason', or 'you already know the answer'.",
-    "Make each paragraph add a new layer: pattern, pressure, likely dynamic, and next move."
+    "Make each paragraph add a new layer: pattern, pressure, likely dynamic, timing, and next move as appropriate for the tier.",
+    "Respect the requested tier depth. Higher tiers should feel tangibly more layered, more specific, and more time-aware than lower tiers."
   ].join(" ");
 
   try {

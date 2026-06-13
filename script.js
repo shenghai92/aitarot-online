@@ -39,10 +39,10 @@ const singlePlans = [
     name: "Starter Reading",
     price: "$4.9",
     type: "One-time",
-    desc: "A short paid reading that adds one more layer of interpretation beyond the free pull.",
+    desc: "The first paid layer: short, sharper, and better at naming the immediate pattern than the free answer.",
     features: [
       "2 concise reading paragraphs",
-      "1 question focus",
+      "Main pattern + immediate risk",
       "1 clear action step",
       "No account required"
     ],
@@ -54,11 +54,11 @@ const singlePlans = [
     name: "Core Reading",
     price: "$14.9",
     type: "One-time",
-    desc: "A structured reading for users who want a clearer interpretation, stronger guidance, and a more usable answer.",
+    desc: "The structured decision layer: better when you need pattern, pressure, and next-step clarity instead of only a quick answer.",
     features: [
       "3 structured reading paragraphs",
       "3 action points",
-      "1 follow-up line",
+      "1-3 week guidance frame",
       "No account required"
     ],
     cta: "Unlock Core",
@@ -69,7 +69,7 @@ const singlePlans = [
     name: "Deep Reading",
     price: "$19",
     type: "One-time",
-    desc: "A deeper reading for users who want timing, priority, and decision pressure mapped more clearly.",
+    desc: "The deepest one-time layer: best when timing, hidden pressure, and what changes first matter as much as the answer itself.",
     features: [
       "4 detailed reading paragraphs",
       "4 action points",
@@ -87,11 +87,11 @@ const focusPlans = [
     name: "Love Focus",
     price: "$29",
     type: "One-time specialized",
-    desc: "A specialized relationship reading focused only on connection, silence, reciprocity, trust, and next-step communication.",
+    desc: "A relationship-only reading for reciprocity, contact strategy, silence, attachment patterns, trust, and communication timing.",
     features: [
       "4 relationship-only paragraphs",
       "4 love-focused action steps",
-      "No career drift",
+      "Contact and reciprocity strategy",
       "No account required"
     ],
     cta: "Unlock Love Focus",
@@ -102,11 +102,11 @@ const focusPlans = [
     name: "Career Focus",
     price: "$29",
     type: "One-time specialized",
-    desc: "A specialized work reading focused only on role fit, opportunity timing, execution, leverage, and risk.",
+    desc: "A work-only reading for role fit, leverage, burnout, opportunity timing, execution, and professional risk.",
     features: [
       "4 career-only paragraphs",
       "4 work-focused action steps",
-      "No romance drift",
+      "Leverage and risk framing",
       "No account required"
     ],
     cta: "Unlock Career Focus",
@@ -120,7 +120,7 @@ const memberPlans = [
     name: "Monthly Membership",
     price: "$29",
     type: "Recurring",
-    desc: "Login-based monthly access for repeat users who want ongoing readings with short-cycle check-ins.",
+    desc: "An ongoing check-in layer for users who want short-cycle guidance across the month instead of a one-off answer.",
     features: [
       "Requires account",
       "4 ongoing-reading paragraphs",
@@ -135,7 +135,7 @@ const memberPlans = [
     name: "Quarterly Membership",
     price: "$59",
     type: "Recurring",
-    desc: "A 30-90 day reading format for transitions, trend review, and strategic reassessment.",
+    desc: "A trend-review layer for transitions, momentum shifts, and 30-90 day reassessment.",
     features: [
       "Requires account",
       "5 trend-review paragraphs",
@@ -151,7 +151,7 @@ const memberPlans = [
     name: "Annual Membership",
     price: "$199",
     type: "Recurring",
-    desc: "The longest-horizon reading tier for users who want broader life pattern guidance across the year ahead.",
+    desc: "The long-horizon layer for bigger yearly patterns, quarter pacing, and repeated themes that need a wider lens.",
     features: [
       "Requires account",
       "6 long-horizon paragraphs",
