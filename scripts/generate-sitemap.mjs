@@ -95,37 +95,11 @@ const urlEntries = htmlFiles
   })
   .join("\n");
 
-const urlSetXml = `<?xml version="1.0" encoding="UTF-8"?>
+const sitemapXml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${urlEntries}
 </urlset>
 `;
 
-const sitemapFiles = [
-  "sitemap-pages.xml",
-  "sitemap-google.xml",
-  "sitemap-bing.xml"
-];
-
-for (const file of sitemapFiles) {
-  writeFileSync(join(rootDir, file), urlSetXml, "utf8");
-}
-
-const sitemapIndexEntries = sitemapFiles
-  .map((file) => {
-    const lastmod = statSync(join(rootDir, file)).mtime.toISOString().slice(0, 10);
-    return `  <sitemap>
-    <loc>${siteUrl}/${file}</loc>
-    <lastmod>${lastmod}</lastmod>
-  </sitemap>`;
-  })
-  .join("\n");
-
-const sitemapIndexXml = `<?xml version="1.0" encoding="UTF-8"?>
-<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${sitemapIndexEntries}
-</sitemapindex>
-`;
-
-writeFileSync(join(rootDir, "sitemap.xml"), sitemapIndexXml, "utf8");
-console.log(`Generated sitemap index and ${htmlFiles.length} URLs across ${sitemapFiles.length} sitemap files.`);
+writeFileSync(join(rootDir, "sitemap.xml"), sitemapXml, "utf8");
+console.log(`Generated sitemap.xml with ${htmlFiles.length} URLs.`);

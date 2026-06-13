@@ -8,11 +8,6 @@ const expectedRobots = [
   "Allow: /",
   `Sitemap: ${siteUrl}/sitemap.xml`
 ];
-const expectedSitemapFiles = [
-  "sitemap-pages.xml",
-  "sitemap-google.xml",
-  "sitemap-bing.xml"
-];
 const expectedRedirects = [
   "https://www.aitarot.online/* https://aitarot.online/:splat 301!",
   "http://www.aitarot.online/* https://aitarot.online/:splat 301!",
@@ -30,20 +25,12 @@ const slugs = new Set(
 const expectedUrlForFile = (file) =>
   file === "index.html" ? `${siteUrl}/` : `${siteUrl}/${file.replace(/\.html$/, "")}`;
 
-const sitemapIndexText = readFileSync(join(rootDir, "sitemap.xml"), "utf8");
+const sitemapText = readFileSync(join(rootDir, "sitemap.xml"), "utf8");
 const robotsText = readFileSync(join(rootDir, "robots.txt"), "utf8");
 const redirectsText = readFileSync(join(rootDir, "_redirects"), "utf8");
-const sitemapIndexUrls = new Set(
-  Array.from(sitemapIndexText.matchAll(/<loc>(.*?)<\/loc>/g), (match) => match[1].trim())
+const sitemapUrls = new Set(
+  Array.from(sitemapText.matchAll(/<loc>(.*?)<\/loc>/g), (match) => match[1].trim())
 );
-const sitemapUrls = new Set();
-
-for (const file of expectedSitemapFiles) {
-  const sitemapText = readFileSync(join(rootDir, file), "utf8");
-  for (const url of Array.from(sitemapText.matchAll(/<loc>(.*?)<\/loc>/g), (match) => match[1].trim())) {
-    sitemapUrls.add(url);
-  }
-}
 
 const issues = [];
 
@@ -112,13 +99,6 @@ for (const file of htmlFiles) {
 
   if (!sitemapUrls.has(expectedUrl)) {
     issues.push(`${file}: missing from sitemap.xml -> ${expectedUrl}`);
-  }
-}
-
-for (const file of expectedSitemapFiles) {
-  const expectedSitemapUrl = `${siteUrl}/${file}`;
-  if (!sitemapIndexUrls.has(expectedSitemapUrl)) {
-    issues.push(`sitemap.xml: missing sitemap reference -> ${expectedSitemapUrl}`);
   }
 }
 
