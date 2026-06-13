@@ -24,7 +24,6 @@ export async function onRequestPost(context) {
 
     const aiResult = await fetchAiReading(context, { focus, tier, question, profile });
     const response = buildReading({ focus, tier, question, profile, aiReading: aiResult.reading });
-    response.aiDebug = aiResult.debug;
     return json(response);
   } catch (error) {
     const fallback = buildReading({
