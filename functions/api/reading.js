@@ -4,38 +4,53 @@ const singlePaidTiers = new Set(["starter", "core", "deep", "love", "career"]);
 const membershipTiers = new Set(["monthly", "quarterly", "yearly"]);
 
 export async function onRequestPost(context) {
-  const body = await context.request.json();
-  const focus = body.focus || "general";
-  const tier = body.tier || "free";
-  const question = String(body.question || "").trim();
-  const sessionSecret = context.env.SESSION_SECRET;
-  const profile = {
-    name: String(body.name || "").trim(),
-    birthDate: String(body.birthDate || "").trim(),
-    birthTime: String(body.birthTime || "").trim(),
-    context: String(body.context || "").trim()
-  };
+  try {
+    const body = await safeReadJson(context.request);
+    const focus = body.focus || "general";
+    const tier = body.tier || "free";
+    const question = String(body.question || "").trim();
+    const sessionSecret = context.env.SESSION_SECRET;
+    const profile = {
+      name: String(body.name || "").trim(),
+      birthDate: String(body.birthDate || "").trim(),
+      birthTime: String(body.birthTime || "").trim(),
+      context: String(body.context || "").trim()
+    };
 
-  const accessError = await verifyTierAccess(context.request, sessionSecret, tier);
-  if (accessError) {
-    return new Response(JSON.stringify(accessError), {
-      status: accessError.status,
-      headers: {
-        "content-type": "application/json; charset=UTF-8",
-        "cache-control": "no-store"
-      }
-    });
-  }
-
-  const aiReading = await fetchAiReading(context, { focus, tier, question, profile });
-  const response = buildReading({ focus, tier, question, profile, aiReading });
-
-  return new Response(JSON.stringify(response), {
-    headers: {
-      "content-type": "application/json; charset=UTF-8",
-      "cache-control": "no-store"
+    const accessError = await verifyTierAccess(context.request, sessionSecret, tier);
+    if (accessError) {
+      return json(accessError, accessError.status);
     }
-  });
+
+    const aiReading = await fetchAiReading(context, { focus, tier, question, profile });
+    const response = buildReading({ focus, tier, question, profile, aiReading });
+    return json(response);
+  } catch (error) {
+    const fallback = buildReading({
+      focus: "general",
+      tier: "free",
+      question: "",
+      profile: { name: "", birthDate: "", birthTime: "", context: "" },
+      aiReading: null
+    });
+
+    return json(
+      {
+        ...fallback,
+        debug: "reading-fallback",
+        error: String(error?.message || error || "unknown-error")
+      },
+      200
+    );
+  }
+}
+
+async function safeReadJson(request) {
+  try {
+    return await request.json();
+  } catch {
+    return {};
+  }
 }
 
 async function verifyTierAccess(request, sessionSecret, tier) {
@@ -417,4 +432,14 @@ function normalizeApiBase(apiBase) {
   }
 
   return raw;
+}
+
+function json(data, status = 200) {
+  return new Response(JSON.stringify(data), {
+    status,
+    headers: {
+      "content-type": "application/json; charset=UTF-8",
+      "cache-control": "no-store"
+    }
+  });
 }
