@@ -197,6 +197,26 @@ body.has-subpage-nav main.section {
     radial-gradient(circle at top right, rgba(121, 209, 255, 0.18), transparent 36%);
 }
 
+.hero-orbit {
+  display: grid;
+  gap: 16px;
+}
+
+.hero-visual-frame {
+  overflow: hidden;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.04);
+  box-shadow: var(--shadow);
+}
+
+.hero-visual,
+.guide-visual img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
 .eyebrow,
 .section-kicker,
 .orbit-kicker,
@@ -781,6 +801,16 @@ textarea {
   padding: 32px;
 }
 
+.guide-visual {
+  margin: 18px 0 22px;
+  overflow: hidden;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  background:
+    linear-gradient(180deg, rgba(12, 25, 49, 0.94), rgba(7, 17, 32, 0.94)),
+    radial-gradient(circle at top right, rgba(121, 209, 255, 0.12), transparent 36%);
+}
+
 .guide-shell h1,
 .guide-shell h2 {
   margin-bottom: 14px;
@@ -986,5 +1016,9 @@ textarea {
   .orbit-card,
   .auth-dialog {
     padding: 24px;
+  }
+
+  .guide-visual {
+    margin: 16px 0 20px;
   }
 }
