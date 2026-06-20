@@ -24,6 +24,7 @@ const priorityMap = {
   "tarot-for-decision-making.html": { changefreq: "weekly", priority: "0.8" },
   "how-to-ask-better-tarot-questions.html": { changefreq: "weekly", priority: "0.8" },
   "tarot-for-no-contact.html": { changefreq: "weekly", priority: "0.8" },
+  "no-contact-rule-tarot-bazi-timing.html": { changefreq: "weekly", priority: "0.8" },
   "tarot-yes-or-no-love.html": { changefreq: "weekly", priority: "0.8" },
   "should-i-text-him-tarot.html": { changefreq: "weekly", priority: "0.8" },
   "should-i-text-him-after-no-contact-tarot-faq.html": { changefreq: "weekly", priority: "0.8" },
