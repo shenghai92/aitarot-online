@@ -1158,3 +1158,57 @@ textarea:focus-visible {
   color: var(--muted);
   font-size: 0.9rem;
 }
+
+
+/* High-priority information architecture refinements */
+.site-footer-subpage {
+  margin-top: 8px;
+}
+
+@media (max-width: 860px) {
+  .top-nav {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .top-nav a {
+    padding: 9px 8px;
+    border: 1px solid rgba(189, 211, 239, 0.16);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.035);
+    text-align: center;
+    font-size: 0.9rem;
+  }
+
+  .top-nav .nav-secondary {
+    display: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .nav-shell {
+    gap: 12px;
+    padding: 12px 0 14px;
+  }
+
+  .brand-sub {
+    max-width: 19rem;
+    font-size: 0.82rem;
+    line-height: 1.35;
+  }
+
+  .top-nav {
+    gap: 6px;
+  }
+
+  .top-nav a {
+    padding: 8px 4px;
+    font-size: 0.78rem;
+  }
+
+  .site-footer {
+    padding-top: 40px;
+  }
+}
