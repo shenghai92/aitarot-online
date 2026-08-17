@@ -16,6 +16,7 @@ const subpageHeaderMarkup = `
         <a href="./tarot-for-no-contact">Love guides</a>
         <a href="./career-tarot-reading-online">Career guides</a>
         <a href="./ai-tarot-accuracy">How it works</a>
+        <a href="./about#editorial-standards">Trust</a>
       </nav>
     </div>
   </header>
@@ -25,7 +26,11 @@ const guideBoundaryMarkup = `
   <aside class="guide-boundary" aria-label="How to use this guide">
     <strong>Use this as reflection, not certainty.</strong>
     <span>Tarot and timing language can help you explore patterns and next steps, but they do not guarantee another person’s choices or replace professional advice.</span>
-    <a href="./ai-tarot-accuracy">Read how AI Tarot works</a>
+    <span class="guide-boundary-links" aria-label="Trust and method links">
+      <a href="./ai-tarot-accuracy">How AI Tarot works</a>
+      <a href="./about#editorial-standards">Editorial standards</a>
+      <a href="./privacy">Privacy</a>
+    </span>
   </aside>
 `;
 
