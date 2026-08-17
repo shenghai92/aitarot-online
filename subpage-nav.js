@@ -16,6 +16,7 @@ const subpageHeaderMarkup = `
         <a href="./tarot-for-no-contact">Love guides</a>
         <a href="./career-tarot-reading-online">Career guides</a>
         <a class="nav-seasonal" href="./2026-forecast-special">2026 outlook</a>
+        <a class="nav-seasonal nav-zodiac" href="./2026-chinese-zodiac-forecast">12 zodiac signs</a>
         <a class="nav-secondary" href="./ai-tarot-accuracy">How it works</a>
         <a href="./about#editorial-standards">Trust</a>
       </nav>
