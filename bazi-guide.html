@@ -18,6 +18,30 @@
     <link rel="stylesheet" href="styles.css?v=20260817c" />
     <script type="application/ld+json">{
   "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://aitarot.online/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Tarot and method guides",
+      "item": "https://aitarot.online/tarot-guide"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Bazi guide"
+    }
+  ]
+}</script>
+
+    <script type="application/ld+json">{
+  "@context": "https://schema.org",
   "@graph": [
     {
       "@type": "Article",
@@ -101,6 +125,14 @@
   <body>
     <main id="main-content" class="section">
       <article class="guide-shell">
+        <nav class="breadcrumb-nav" aria-label="Breadcrumb">
+          <ol class="breadcrumb-list">
+            <li><a href="./">Home</a></li>
+            <li><a href="./tarot-guide">Tarot and method guides</a></li>
+            <li aria-current="page">Bazi guide</li>
+          </ol>
+        </nav>
+
         <p class="section-kicker">Bazi guide</p>
         <h1>Bazi guide: Four Pillars, five elements, and a careful way to read timing</h1>
         <p class="guide-lead">Bazi is often introduced online with confident promises. This guide explains the vocabulary more carefully: what Four Pillars language refers to, how the five elements are used in tradition, and why this site's optional layer is not a formal chart calculation.</p>
