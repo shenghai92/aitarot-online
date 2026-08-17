@@ -1,23 +1,13 @@
-import { existsSync, readFileSync, readdirSync, statSync, writeFileSync } from "node:fs";
+import { existsSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 
 const siteUrl = "https://aitarot.online";
 const rootDir = process.cwd();
-const refreshedDate = "2026-08-17";
-const refreshedPages = new Set([
-  "index.html",
-  "2026-bazi-reading-for-jia-wood-daymaster.html",
-  "2026-chinese-zodiac-forecast.html",
-  "2026-fire-horse-career-guide.html",
-  "2026-forecast-special.html",
-  "2026-love-forecast-tarot-bazi.html"
-]);
-const previousSitemap = existsSync(join(rootDir, "sitemap.xml"))
-  ? readFileSync(join(rootDir, "sitemap.xml"), "utf8")
-  : "";
-const previousLastmod = new Map(
-  Array.from(previousSitemap.matchAll(/<loc>([^<]+)<\/loc>[\s\S]*?<lastmod>([^<]+)<\/lastmod>/g), (match) => [match[1], match[2]])
-);
+const lastmodMapPath = join(rootDir, "scripts/sitemap-lastmod.json");
+if (!existsSync(lastmodMapPath)) {
+  throw new Error("Missing scripts/sitemap-lastmod.json; add a verified lastmod for every sitemap URL before generating.");
+}
+const lastmodMap = JSON.parse(readFileSync(lastmodMapPath, "utf8"));
 
 const priorityMap = {
   "index.html": { changefreq: "daily", priority: "1.0" },
@@ -113,9 +103,10 @@ const urlEntries = htmlFiles
   .map((file) => {
     const path = file === "index.html" ? "/" : `/${file.replace(/\.html$/, "")}`;
     const meta = priorityMap[file] || { changefreq: "weekly", priority: "0.7" };
-    const lastmod = refreshedPages.has(file)
-      ? refreshedDate
-      : previousLastmod.get(`${siteUrl}${path}`) || statSync(join(rootDir, file)).mtime.toISOString().slice(0, 10);
+    const lastmod = lastmodMap[path];
+    if (!lastmod || !/^\d{4}-\d{2}-\d{2}$/.test(lastmod)) {
+      throw new Error(`Missing or invalid verified lastmod for ${path}`);
+    }
     return `  <url>
     <loc>${siteUrl}${path}</loc>
     <lastmod>${lastmod}</lastmod>

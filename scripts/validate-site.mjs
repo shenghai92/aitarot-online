@@ -53,9 +53,12 @@ const expectedUrlForFile = (file) =>
 const sitemapText = readFileSync(join(rootDir, "sitemap.xml"), "utf8");
 const robotsText = readFileSync(join(rootDir, "robots.txt"), "utf8");
 const redirectsText = readFileSync(join(rootDir, "_redirects"), "utf8");
-const sitemapUrls = new Set(
-  Array.from(sitemapText.matchAll(/<loc>(.*?)<\/loc>/g), (match) => match[1].trim())
+const lastmodMap = JSON.parse(readFileSync(join(rootDir, "scripts/sitemap-lastmod.json"), "utf8"));
+const sitemapEntries = Array.from(
+  sitemapText.matchAll(/<loc>(.*?)<\/loc>\s*<lastmod>(.*?)<\/lastmod>/gs),
+  (match) => ({ url: match[1].trim(), lastmod: match[2].trim() })
 );
+const sitemapUrls = new Set(sitemapEntries.map((entry) => entry.url));
 
 const issues = [];
 
@@ -125,6 +128,19 @@ for (const file of htmlFiles) {
   if (!sitemapUrls.has(expectedUrl)) {
     issues.push(`${file}: missing from sitemap.xml -> ${expectedUrl}`);
   }
+  const expectedSitemapPath = file === "index.html" ? "/" : `/${file.replace(/\.html$/, "")}`;
+  const sitemapEntry = sitemapEntries.find((entry) => entry.url === expectedUrl);
+  if (!sitemapEntry) {
+    issues.push(`${file}: missing loc/lastmod pair in sitemap.xml -> ${expectedUrl}`);
+  } else if (!/^\d{4}-\d{2}-\d{2}$/.test(sitemapEntry.lastmod)) {
+    issues.push(`${file}: invalid sitemap lastmod -> ${sitemapEntry.lastmod}`);
+  } else if (lastmodMap[expectedSitemapPath] !== sitemapEntry.lastmod) {
+    issues.push(`${file}: sitemap lastmod does not match scripts/sitemap-lastmod.json`);
+  }
+}
+
+if (sitemapEntries.length !== htmlFiles.length) {
+  issues.push(`sitemap.xml: expected ${htmlFiles.length} loc/lastmod pairs but found ${sitemapEntries.length}`);
 }
 
 for (const url of sitemapUrls) {
