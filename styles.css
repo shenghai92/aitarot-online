@@ -1022,3 +1022,64 @@ textarea {
     margin: 16px 0 20px;
   }
 }
+
+
+.skip-link {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  z-index: 100;
+  transform: translateY(-180%);
+  padding: 10px 14px;
+  border-radius: 8px;
+  color: #03111f;
+  background: var(--warm);
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: var(--shadow);
+  transition: transform 0.2s ease;
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 3px solid var(--warm);
+  outline-offset: 3px;
+}
+
+.guide-boundary,
+.source-note {
+  display: grid;
+  gap: 6px;
+  margin: 0 0 24px;
+  padding: 16px 18px;
+  border-left: 3px solid var(--warm);
+  border-radius: 6px;
+  color: var(--muted);
+  background: rgba(240, 217, 164, 0.08);
+}
+
+.guide-boundary strong,
+.source-note strong {
+  color: var(--text);
+}
+
+.guide-boundary a,
+.source-note a {
+  color: var(--accent);
+}
+
+.text-link {
+  display: inline-block;
+  margin-top: 12px;
+  color: var(--accent);
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}

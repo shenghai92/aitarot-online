@@ -50,3 +50,10 @@ npm run sitemap
 ```
 
 这会自动扫描当前项目根目录里的所有 `.html` 页面，并自动输出无扩展名版本的 `sitemap.xml` URL。
+
+
+## English-first editorial rules
+
+The public site is written for English-speaking readers in the US, UK, Canada, Australia, and similar markets. New pages should use natural question language, short paragraphs, descriptive subheadings, skimmable cards, plain-English explanations of Tarot/Bazi/I Ching, and explicit limits around certainty. Do not publish a page only because a keyword can be placed in a title. Every indexable page must have a distinct search intent, an editorial owner, visible sources where cultural claims are made, and a clear reason for existing alongside the current topic hubs.
+
+Retired seasonal or near-duplicate pages are redirected in `_redirects` and excluded from `sitemap.xml`. Run `npm run sitemap && npm run validate` after adding or consolidating pages.
