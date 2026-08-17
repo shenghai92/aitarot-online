@@ -1169,7 +1169,7 @@ textarea:focus-visible {
   .top-nav {
     width: 100%;
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(5, minmax(0, 1fr));
     gap: 8px;
   }
 
@@ -1184,6 +1184,11 @@ textarea:focus-visible {
 
   .top-nav .nav-secondary {
     display: none;
+  }
+
+  .top-nav .nav-seasonal {
+    color: var(--warm);
+    border-color: rgba(240, 217, 164, 0.34);
   }
 }
 
@@ -1200,6 +1205,7 @@ textarea:focus-visible {
   }
 
   .top-nav {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 6px;
   }
 
