@@ -25,6 +25,7 @@ const expectedRedirects = [
   "http://www.aitarot.online/* https://aitarot.online/:splat 301!",
   "http://aitarot.online/* https://aitarot.online/:splat 301!"
 ];
+const excludedPages = new Set(["404.html"]);
 const retiredPages = new Set([
   "2026-will-they-reach-out-no-contact.html",
   "2026-final-round-interview-tarot-guide.html",
@@ -40,6 +41,7 @@ const retiredPages = new Set([
 const htmlFiles = readdirSync(rootDir)
   .filter((file) => file.endsWith(".html"))
   .filter((file) => !file.startsWith("work"))
+  .filter((file) => !excludedPages.has(file))
   .filter((file) => !retiredPages.has(file))
   .sort((a, b) => a.localeCompare(b));
 
@@ -61,6 +63,16 @@ const sitemapEntries = Array.from(
 const sitemapUrls = new Set(sitemapEntries.map((entry) => entry.url));
 
 const issues = [];
+const notFoundSource = readFileSync(join(rootDir, "404.html"), "utf8");
+if (!notFoundSource.includes('<meta name="robots" content="noindex,follow" />')) {
+  issues.push("404.html: missing noindex,follow robots meta");
+}
+if (notFoundSource.includes('<link rel="canonical"')) {
+  issues.push("404.html: should not declare a canonical URL");
+}
+if (sitemapUrls.has(`${siteUrl}/404`)) {
+  issues.push("404.html: must not be included in sitemap.xml");
+}
 
 for (const file of htmlFiles) {
   const source = readFileSync(join(rootDir, file), "utf8");
