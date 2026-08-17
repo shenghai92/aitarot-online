@@ -1,8 +1,23 @@
-import { readdirSync, statSync, writeFileSync } from "node:fs";
+import { existsSync, readFileSync, readdirSync, statSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 
 const siteUrl = "https://aitarot.online";
 const rootDir = process.cwd();
+const refreshedDate = "2026-08-17";
+const refreshedPages = new Set([
+  "index.html",
+  "2026-bazi-reading-for-jia-wood-daymaster.html",
+  "2026-chinese-zodiac-forecast.html",
+  "2026-fire-horse-career-guide.html",
+  "2026-forecast-special.html",
+  "2026-love-forecast-tarot-bazi.html"
+]);
+const previousSitemap = existsSync(join(rootDir, "sitemap.xml"))
+  ? readFileSync(join(rootDir, "sitemap.xml"), "utf8")
+  : "";
+const previousLastmod = new Map(
+  Array.from(previousSitemap.matchAll(/<loc>([^<]+)<\/loc>[\s\S]*?<lastmod>([^<]+)<\/lastmod>/g), (match) => [match[1], match[2]])
+);
 
 const priorityMap = {
   "index.html": { changefreq: "daily", priority: "1.0" },
@@ -73,10 +88,21 @@ const priorityMap = {
 };
 
 const excluded = new Set(["404.html"]);
+const retiredPages = new Set([
+  "2026-will-they-reach-out-no-contact.html",
+  "2026-final-round-interview-tarot-guide.html",
+  "2026-star-tarot-vs-bazi-wood-luck.html",
+  "2026-entrepreneur-bazi-luck-pillar-guide.html",
+  "2026-tarot-i-ching-change-guide.html",
+  "2026-i-ching-hexagram-1-bazi-career-guide.html",
+  "2026-should-i-quit-my-job-tarot-i-ching.html",
+  "2026-fire-horse-year-for-water-signs-career.html",
+  "2026-no-contact-love-reading.html"
+]);
 
 const htmlFiles = readdirSync(rootDir)
   .filter((file) => file.endsWith(".html"))
-  .filter((file) => !excluded.has(file))
+  .filter((file) => !excluded.has(file) && !retiredPages.has(file))
   .sort((a, b) => {
     if (a === "index.html") return -1;
     if (b === "index.html") return 1;
@@ -87,7 +113,9 @@ const urlEntries = htmlFiles
   .map((file) => {
     const path = file === "index.html" ? "/" : `/${file.replace(/\.html$/, "")}`;
     const meta = priorityMap[file] || { changefreq: "weekly", priority: "0.7" };
-    const lastmod = statSync(join(rootDir, file)).mtime.toISOString().slice(0, 10);
+    const lastmod = refreshedPages.has(file)
+      ? refreshedDate
+      : previousLastmod.get(`${siteUrl}${path}`) || statSync(join(rootDir, file)).mtime.toISOString().slice(0, 10);
     return `  <url>
     <loc>${siteUrl}${path}</loc>
     <lastmod>${lastmod}</lastmod>

@@ -8,14 +8,39 @@ const expectedRobots = [
   "Allow: /",
   `Sitemap: ${siteUrl}/sitemap.xml`
 ];
+const expectedRetiredRedirects = [
+  "/2026-will-they-reach-out-no-contact /tarot-for-no-contact 301!",
+  "/2026-final-round-interview-tarot-guide /tarot-spread-for-job-interview 301!",
+  "/2026-star-tarot-vs-bazi-wood-luck /2026-forecast-special 301!",
+  "/2026-entrepreneur-bazi-luck-pillar-guide /2026-forecast-special 301!",
+  "/2026-tarot-i-ching-change-guide /yijing-guide 301!",
+  "/2026-i-ching-hexagram-1-bazi-career-guide /career-guidance-i-ching-astrology 301!",
+  "/2026-should-i-quit-my-job-tarot-i-ching /should-i-leave-my-job-tarot 301!",
+  "/2026-fire-horse-year-for-water-signs-career /2026-fire-horse-career-guide 301!",
+  "/2026-no-contact-love-reading /tarot-for-no-contact 301!"
+];
+
 const expectedRedirects = [
   "https://www.aitarot.online/* https://aitarot.online/:splat 301!",
   "http://www.aitarot.online/* https://aitarot.online/:splat 301!",
   "http://aitarot.online/* https://aitarot.online/:splat 301!"
 ];
+const retiredPages = new Set([
+  "2026-will-they-reach-out-no-contact.html",
+  "2026-final-round-interview-tarot-guide.html",
+  "2026-star-tarot-vs-bazi-wood-luck.html",
+  "2026-entrepreneur-bazi-luck-pillar-guide.html",
+  "2026-tarot-i-ching-change-guide.html",
+  "2026-i-ching-hexagram-1-bazi-career-guide.html",
+  "2026-should-i-quit-my-job-tarot-i-ching.html",
+  "2026-fire-horse-year-for-water-signs-career.html",
+  "2026-no-contact-love-reading.html"
+]);
+
 const htmlFiles = readdirSync(rootDir)
   .filter((file) => file.endsWith(".html"))
   .filter((file) => !file.startsWith("work"))
+  .filter((file) => !retiredPages.has(file))
   .sort((a, b) => a.localeCompare(b));
 
 const slugs = new Set(
@@ -136,6 +161,12 @@ const redirectLines = redirectsText
   .split(/\r?\n/)
   .map((line) => line.trim())
   .filter(Boolean);
+
+expectedRetiredRedirects.forEach((line) => {
+  if (!redirectLines.includes(line)) {
+    issues.push(`_redirects: missing retired-page rule "${line}"`);
+  }
+});
 
 if (redirectLines.length < expectedRedirects.length) {
   issues.push(`_redirects: expected at least ${expectedRedirects.length} rules`);
