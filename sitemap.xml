@@ -20,13 +20,13 @@
   </url>
   <url>
     <loc>https://aitarot.online/2026-dog-horoscope</loc>
-    <lastmod>2026-06-11</lastmod>
+    <lastmod>2026-08-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://aitarot.online/2026-dragon-horoscope</loc>
-    <lastmod>2026-06-11</lastmod>
+    <lastmod>2026-08-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -44,13 +44,13 @@
   </url>
   <url>
     <loc>https://aitarot.online/2026-goat-horoscope</loc>
-    <lastmod>2026-06-11</lastmod>
+    <lastmod>2026-08-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://aitarot.online/2026-horse-horoscope</loc>
-    <lastmod>2026-08-17</lastmod>
+    <lastmod>2026-08-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -62,37 +62,37 @@
   </url>
   <url>
     <loc>https://aitarot.online/2026-monkey-horoscope</loc>
-    <lastmod>2026-06-11</lastmod>
+    <lastmod>2026-08-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://aitarot.online/2026-ox-horoscope</loc>
-    <lastmod>2026-06-11</lastmod>
+    <lastmod>2026-08-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://aitarot.online/2026-pig-horoscope</loc>
-    <lastmod>2026-06-11</lastmod>
+    <lastmod>2026-08-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://aitarot.online/2026-rabbit-horoscope</loc>
-    <lastmod>2026-06-11</lastmod>
+    <lastmod>2026-08-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://aitarot.online/2026-rat-horoscope</loc>
-    <lastmod>2026-08-17</lastmod>
+    <lastmod>2026-08-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://aitarot.online/2026-rooster-horoscope</loc>
-    <lastmod>2026-06-11</lastmod>
+    <lastmod>2026-08-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -104,13 +104,13 @@
   </url>
   <url>
     <loc>https://aitarot.online/2026-snake-horoscope</loc>
-    <lastmod>2026-06-11</lastmod>
+    <lastmod>2026-08-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://aitarot.online/2026-tiger-horoscope</loc>
-    <lastmod>2026-08-17</lastmod>
+    <lastmod>2026-08-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -331,6 +331,12 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://aitarot.online/tarot-card-combinations</loc>
+    <lastmod>2026-08-18</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://aitarot.online/tarot-card-meanings</loc>
     <lastmod>2026-08-18</lastmod>
     <changefreq>weekly</changefreq>
@@ -356,6 +362,12 @@
   </url>
   <url>
     <loc>https://aitarot.online/tarot-reading-by-date-of-birth</loc>
+    <lastmod>2026-08-18</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://aitarot.online/tarot-reversals-guide</loc>
     <lastmod>2026-08-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
