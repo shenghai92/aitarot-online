@@ -15,6 +15,8 @@ const subpageHeaderMarkup = `
         <a class="nav-secondary" href="./#plans">Plans</a>
         <a href="./tarot-for-no-contact">Love guides</a>
         <a href="./career-tarot-reading-online">Career guides</a>
+        <a href="./tarot-guide">Learn Tarot</a>
+        <a class="nav-practice" href="./tarot-reading-for-yourself">Practice</a>
         <a class="nav-seasonal" href="./2026-forecast-special">2026 outlook</a>
         <a class="nav-seasonal nav-zodiac" href="./2026-chinese-zodiac-forecast">12 zodiac signs</a>
         <a class="nav-secondary" href="./ai-tarot-accuracy">How it works</a>
@@ -54,6 +56,7 @@ const subpageFooterMarkup = `
           <a href="./career-tarot-reading-online">Career and job decisions</a>
           <a href="./2026-forecast-special">2026 outlook</a>
           <a href="./tarot-guide">Beginner Tarot guide</a>
+          <a href="./tarot-reading-for-yourself">Read Tarot for yourself</a>
           <a href="./tarot-for-decision-making">Tarot for decisions</a>
         </div>
       </div>
@@ -64,6 +67,8 @@ const subpageFooterMarkup = `
           <a href="./astrology-guide">Astrology guide</a>
           <a href="./bazi-guide">Bazi guide</a>
           <a href="./yijing-guide">I Ching guide</a>
+          <a href="./tarot-reversals-guide">Tarot reversals</a>
+          <a href="./tarot-card-combinations">Card combinations</a>
         </div>
       </div>
       <div>
