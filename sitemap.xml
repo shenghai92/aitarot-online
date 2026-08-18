@@ -301,6 +301,12 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://aitarot.online/tarot-card-meanings</loc>
+    <lastmod>2026-08-18</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://aitarot.online/tarot-for-decision-making</loc>
     <lastmod>2026-06-13</lastmod>
     <changefreq>weekly</changefreq>
@@ -314,13 +320,19 @@
   </url>
   <url>
     <loc>https://aitarot.online/tarot-guide</loc>
-    <lastmod>2026-06-18</lastmod>
+    <lastmod>2026-08-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://aitarot.online/tarot-spread-for-job-interview</loc>
     <lastmod>2026-08-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://aitarot.online/tarot-spread-for-singles</loc>
+    <lastmod>2026-08-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
