@@ -57,6 +57,7 @@ const subpageFooterMarkup = `
           <a href="./2026-forecast-special">2026 outlook</a>
           <a href="./tarot-guide">Beginner Tarot guide</a>
           <a href="./tarot-reading-for-yourself">Read Tarot for yourself</a>
+          <a href="./tarot-journal-guide">Tarot journal</a>
           <a href="./tarot-for-decision-making">Tarot for decisions</a>
         </div>
       </div>
